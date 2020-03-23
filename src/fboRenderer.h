@@ -36,7 +36,7 @@ public:
      * like loading in new meshes, etc.
      * @param item
      */
-    virtual void addSynch(QQuickFramebufferObject *item){}
+    virtual void addSync(QQuickFramebufferObject *item){}
 
     void render() Q_DECL_OVERRIDE;
 

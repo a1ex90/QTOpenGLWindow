@@ -38,9 +38,9 @@ ApplicationWindow
 {
     id: applicationWindow
     visible: true
-    width: 800
+    width: 660
     height: 500
-    title: qsTr("Scene Viewer")
+    title: qsTr("OpenGL Viewer")
 
     /******************************************************
      * Viewer (OpenGL)
@@ -48,14 +48,13 @@ ApplicationWindow
 
     Item {
         id: openGLViewer
-        x: 150
+        x: 10
         y: 10
         width: 640
-        height: 423
+        height: 480
         visible: true
 
         QTOpenGLWindow { id:openGLWindow}
-
     }
 
     /******************************************************

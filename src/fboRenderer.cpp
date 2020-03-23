@@ -32,7 +32,7 @@ void FrameBufferObjectRenderer::synchronize(QQuickFramebufferObject *item)
     m_render.setElevation(i->elevation());
     m_render.setDistance(i->distance());
 
-    addSynch(item);
+    addSync(item);
 }
 
 void FrameBufferObjectRenderer::render() {
