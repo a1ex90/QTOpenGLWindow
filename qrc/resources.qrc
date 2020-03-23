@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>QTOpenGLWindow.qml</file>
+    </qresource>
+</RCC>
