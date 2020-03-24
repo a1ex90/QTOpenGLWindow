@@ -15,7 +15,10 @@ CMake can be advised to build a test application by passing a variable `BUILD_TE
 
 ## Setup 
 The following steps need to be done to add this module to an existing project:
-1. clone this module to a folder inside the project (e.g. `ext/QTOpenGLWindow`)
+1. clone this module to a folder inside the project (e.g. `ext/QTOpenGLWindow`) or directly add this module as a submodule to the project git
+```
+git submodule add git@github.com:a1ex90/QTOpenGLWindow.git ext/QTOpenGLWindow
+```
 2. add this module to the project CMake file
 ```
 add_subdirectory(ext/QTOpenGLWindow)
@@ -30,10 +33,6 @@ target_link_libraries(
 <qresource>
     <file>../ext/QTOpenGLWindow/qrc/</file>
 </qresource>
-```
-4. (optional) add this module as a submodule to the project git
-```
-git submodule add git@github.com:a1ex90/QTOpenGLWindow.git ext/QTOpenGLWindow
 ```
 
 ## Usage
