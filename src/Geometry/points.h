@@ -47,6 +47,13 @@ public:
     void changePoints(QString file);
 
     /**
+     * Changes points to given array
+     * @param dataHead data head of the array data
+     * @param length number of elements to draw (1/3 of array length)
+     */
+    void changePoints(float *dataHead, int length);
+
+    /**
      * Function to clear buffers
      */
     void flush();

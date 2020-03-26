@@ -23,7 +23,7 @@
 #include <QOpenGLFramebufferObject>
 #include "fboRenderer.h"
 
-// MyFrameBufferObject implementation
+// FBO implementation
 
 FrameBufferObject::FrameBufferObject(QQuickItem *parent)
         : QQuickFramebufferObject(parent)

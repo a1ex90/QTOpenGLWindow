@@ -40,7 +40,7 @@ For rendering some geometry the `FrameBufferObject` and `FrameBufferObjectRender
 
 The extended `FrameBufferObject` needs to be registered as a qml module inside the main.cpp, like e.g.:
 ```
-qmlRegisterType<MyFrameBufferObject>("opengl.qt.viewer", 1, 0, "RenderUnit");
+qmlRegisterType<FBO>("opengl.qt.viewer", 1, 0, "RenderUnit");
 ```
 
 This so generated module plus the qml from the submodule need to be imported in the project's qml file, like e.g.:

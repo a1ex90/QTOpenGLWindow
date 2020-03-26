@@ -85,6 +85,24 @@ void PointCloud::changePoints(QString file) {
     m_vao->release();
 }
 
+void PointCloud::changePoints(float *dataHead, int length) {
+    m_drawCount = length;
+
+    m_vao->bind();
+
+    m_positionsBuffer->bind();
+    m_positionsBuffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    m_positionsBuffer->allocate(dataHead, 3 * length * sizeof(float));
+
+    m_shader->bind();
+
+    m_positionsBuffer->bind();
+    m_shader->enableAttributeArray("vertexPosition");
+    m_shader->setAttributeBuffer("vertexPosition", GL_FLOAT, 0, 3);
+
+    m_vao->release();
+}
+
 void PointCloud::flush() {
     m_vao->bind();
 
