@@ -8,7 +8,7 @@ Item {
     width: parent.width
     height: parent.height
 
-    property RenderUnit renderer: RenderUnit{parent: parWindow; width: parWindow.width; height: parWindow.height}
+    property RenderUnit renderer: RenderUnit{parent: parWindow; width: parWindow.width; height: parWindow.height; objectName: "renderunit_id"}
 
     Slider {
         id: sl_distanceControll
