@@ -11,7 +11,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 # Require QT5
-find_package(Qt5 COMPONENTS 3DCore 3DRender 3DInput 3DExtras Core Quick Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick Widgets REQUIRED)
 
 if (DEFINED BUILD_TESTS)
 add_subdirectory(test)
