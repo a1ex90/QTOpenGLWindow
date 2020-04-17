@@ -54,6 +54,12 @@ public:
     void changePoints(float *dataHead, int length);
 
     /**
+     * Sets the color in which the points should be drawn
+     * @param color desired color
+     */
+    void setColor(QVector3D color);
+
+    /**
      * Function to clear buffers
      */
     void flush();
@@ -71,7 +77,8 @@ protected:
     QScopedPointer<QOpenGLBuffer> m_positionsBuffer;
     // Center of gravity of the point cloud
     QVector3D m_centroid;
-
+    // Color of points
+    QVector3D m_color;
 };
 
 #endif //QTSIMVIEW_POINTS_H
