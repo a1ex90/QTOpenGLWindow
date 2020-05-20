@@ -59,6 +59,8 @@ public:
     void addGeometry(const std::shared_ptr<Geometry> &geometry);
     std::shared_ptr<Geometry> &getGeometry(const unsigned int& id);
 
+    int geometryCount();
+
 private:
     // all drawable geometry
     std::vector<std::shared_ptr<Geometry>> m_geometries;

@@ -78,6 +78,14 @@ public:
      * Override this with a function to destroy buffers and shader
      */
     virtual void invalidate() = 0;
+
+    /**
+     * Returns geometry type
+     * @return geometry type
+     */
+    GeometryType getType() {
+        return m_type;
+    }
 private:
     /**
      * Override this with initialization of position buffers, etc.

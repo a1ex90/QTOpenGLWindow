@@ -32,6 +32,7 @@ Mesh::Mesh()
     , m_normalsBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
     , m_indicesBuffer(new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer))
     , m_transform()
+    , m_externalTransform()
 {}
 
 /******************************************************
@@ -43,7 +44,7 @@ void Mesh::render(QMatrix4x4 modelMatrix, QMatrix4x4 viewMatrix, QMatrix4x4 proj
 
     const QMatrix4x4 modelViewMatrix = viewMatrix * modelMatrix;
 
-    const QMatrix4x4 meshModelViewMatrix = modelViewMatrix * m_transform.getModel();
+    const QMatrix4x4 meshModelViewMatrix = modelViewMatrix * m_externalTransform * m_transform.getModel();
     const QMatrix4x4 meshModelProjectionMatrix = projectionMatrix * meshModelViewMatrix;
 
     m_shader->bind();
@@ -154,6 +155,10 @@ void Mesh::flush() {
 
 void Mesh::setTransform(Transform transform) {
     m_transform = transform;
+}
+
+void Mesh::updateExternalTransform(QMatrix4x4 transform) {
+    m_externalTransform = transform;
 }
 
 

@@ -133,3 +133,7 @@ void RenderUnit::addGeometry(const std::shared_ptr<Geometry> &geometry) {
 std::shared_ptr<Geometry> & RenderUnit::getGeometry(const unsigned int &id) {
     return m_geometries.at(id);
 }
+
+int RenderUnit::geometryCount() {
+    return m_geometries.size();
+}

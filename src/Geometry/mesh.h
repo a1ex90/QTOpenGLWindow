@@ -57,6 +57,12 @@ public:
      * @param transform
      */
     void setTransform(Transform transform);
+
+    /**
+     * Sets external transformation that's applied to the internal
+     * @param transform External transformation 4x4 Matrix
+     */
+    void updateExternalTransform(QMatrix4x4 transform);
 private:
     virtual void initializeBuffers() override;
 protected:
@@ -68,6 +74,8 @@ protected:
     QScopedPointer<QOpenGLBuffer> m_indicesBuffer;
     // Position, Rotation and Scaling transformation
     Transform m_transform;
+    // External editable transformation
+    QMatrix4x4 m_externalTransform;
 };
 
 
