@@ -63,6 +63,12 @@ public:
      * @param transform External transformation 4x4 Matrix
      */
     void updateExternalTransform(QMatrix4x4 transform);
+
+    /**
+     * Sets external transformation that's applied to the internal
+     * @param transform External transformation 4x4 Matrix data (column major)
+     */
+    void updateExternalTransform(float* transform);
 private:
     virtual void initializeBuffers() override;
 protected:

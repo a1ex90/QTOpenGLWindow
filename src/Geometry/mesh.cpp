@@ -161,6 +161,16 @@ void Mesh::updateExternalTransform(QMatrix4x4 transform) {
     m_externalTransform = transform;
 }
 
+void Mesh::updateExternalTransform(float *transform) {
+    QMatrix4x4 transformation;
+    for(int i = 0; i < 4; i++) {
+        for(int j = 0; j < 4; j++) {
+            transformation(i, j) = transform[4 * j + i];
+        }
+    }
+    updateExternalTransform(transformation);
+}
+
 
 /******************************************************
  * Private Functions
