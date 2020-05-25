@@ -58,6 +58,7 @@ public:
 
     void addGeometry(const std::shared_ptr<Geometry> &geometry);
     std::shared_ptr<Geometry> &getGeometry(const unsigned int& id);
+    void clearGeometries();
 
     int geometryCount();
 
