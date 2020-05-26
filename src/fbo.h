@@ -30,15 +30,14 @@ public:
     explicit FrameBufferObject(QQuickItem *parent = 0);
     Renderer *createRenderer() const Q_DECL_OVERRIDE;
 
-    Q_INVOKABLE void mouseMove(QVector2D move, int mode);
-    Q_INVOKABLE void mouseRotate(QVector2D move, QVector2D old, QVector2D screen);
+    int readMouse(QVector2D &move, QVector2D &start, QVector2D &screen);
 
-    int readMouseMove(QVector2D &move);
-    void readMouseRotate(QVector2D &old, QVector2D &screen);
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 
 private:
-    QVector2D m_screenDim;
-    QVector2D m_mouseOld;
+    QVector2D m_mouseStart;
     QVector2D m_mouseMove;
     // MouseMoveMode 0 = none, 1 = rotate, 2 = pan, 3 = zoom
     int m_mouseMode;

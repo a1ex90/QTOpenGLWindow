@@ -109,25 +109,30 @@ void RenderUnit::invalidate()
 }
 
 void RenderUnit::rotate(const QVector2D &move, const QVector2D &start, const QVector2D &screen) {
-    const float r = std::min(screen.x(),screen.y()) / 2.0f;
-    QVector3D startP = projectOnSphere(start, screen, r);
-    QVector3D moveP = projectOnSphere(move, screen, r);
-    float angle = -acos(QVector3D::dotProduct(startP,moveP)) * 180 / M_PI;
-    QVector3D axis = QVector3D::crossProduct(startP, moveP);
+    if(move != start) {
+        const float r = std::min(screen.x(),screen.y()) / 2.0f;
+        QVector3D startP = projectOnSphere(start, screen, r);
+        QVector3D moveP = projectOnSphere(move, screen, r);
+        float angle = -acos(QVector3D::dotProduct(startP,moveP)) * 180 / M_PI;
+        QVector3D axis = QVector3D::crossProduct(startP, moveP);
 //    axis = m_transform.getModel().inverted() * axis;
-    axis = m_transform.getRot().inverted() * axis;
-    QMatrix4x4 mat = m_transform.getRot();
-    mat.rotate(angle,axis);
-    m_transform.setRot(mat);
+        axis = m_transform.getRot().inverted() * axis;
+        QMatrix4x4 mat = m_transform.getRot();
+        mat.rotate(angle,axis);
+        m_transform.setRot(mat);
+    }
+
 }
 
-void RenderUnit::pan(const QVector2D &move) {
-    QVector3D moveP = {0,move.y(),move.x()};
+
+void RenderUnit::pan(const QVector2D &move, const QVector2D &start, const QVector2D &screen) {
+    QVector3D moveP = { 0, 2.0f * (start.y() - move.y()) / screen.y(), 2.0f * (start.x() - move.x()) / screen.x()};
     m_transform.setPos(m_transform.getPos() + moveP);
 }
 
-void RenderUnit::zoom(const float &move) {
-    m_transform.setScale(move* m_transform.getScale());
+void RenderUnit::zoom(const QVector2D &move, const QVector2D &start, const QVector2D &screen) {
+    float zoom = 1.0f + (move.y() - start.y()) / screen.y();
+    m_transform.setScale(zoom * m_transform.getScale());
 }
 
 void RenderUnit::setCenter(QVector3D center) {

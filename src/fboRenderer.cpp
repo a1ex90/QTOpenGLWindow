@@ -29,16 +29,15 @@ void FrameBufferObjectRenderer::synchronize(QQuickFramebufferObject *item)
 
     FrameBufferObject *i = static_cast<FrameBufferObject *>(item);
     QVector2D move;
-    int mode = i->readMouseMove(move);
+    QVector2D start;
+    QVector2D screen;
+    int mode = i->readMouse(move, start, screen);
     if(mode == 1) {
-        QVector2D old;
-        QVector2D screen;
-        i->readMouseRotate(old, screen);
-        m_render.rotate(move, old, screen);
+        m_render.rotate(move, start, screen);
     } else if(mode == 2) {
-        m_render.pan(move);
+        m_render.pan(move, start, screen);
     } else if(mode == 3) {
-        m_render.zoom(move.y());
+        m_render.zoom(move, start, screen);
     }
 
     addSync(item);

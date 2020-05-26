@@ -29,10 +29,10 @@ FrameBufferObject::FrameBufferObject(QQuickItem *parent)
         : QQuickFramebufferObject(parent)
         , m_mouseMode(0)
         , m_mouseMove(0,0)
-        , m_mouseOld(0,0)
-        , m_screenDim(0,0)
+        , m_mouseStart(0, 0)
 {
     setMirrorVertically(true);
+    setAcceptedMouseButtons(Qt::AllButtons);
 }
 
 QQuickFramebufferObject::Renderer *FrameBufferObject::createRenderer() const
@@ -40,29 +40,34 @@ QQuickFramebufferObject::Renderer *FrameBufferObject::createRenderer() const
     return new FrameBufferObjectRenderer;
 }
 
-void FrameBufferObject::mouseMove(QVector2D move, int mode) {
-    m_mouseMode = mode;
-    m_mouseMove = move;
-}
-
-void FrameBufferObject::mouseRotate(QVector2D move, QVector2D old, QVector2D screen) {
-    m_mouseMove = move;
-    m_mouseOld = old;
-    m_screenDim = screen;
-    m_mouseMode = 1;
-}
-
-int FrameBufferObject::readMouseMove(QVector2D &move) {
+int FrameBufferObject::readMouse(QVector2D &move, QVector2D &start, QVector2D &screen) {
     move = m_mouseMove;
-    int mode = m_mouseMode;
-    m_mouseMove = QVector2D(0,0);
-    m_mouseMode = 0;
+    start = m_mouseStart;
+    screen = {(float)this->width(), (float)this->height()};
+    m_mouseStart = m_mouseMove;
     update();
-    return mode;
+    return m_mouseMode;
 }
 
-void FrameBufferObject::readMouseRotate(QVector2D &old, QVector2D &screen) {
-    old = m_mouseOld;
-    screen = m_screenDim;
-    m_mouseOld = QVector2D(0,0);
+void FrameBufferObject::mousePressEvent(QMouseEvent *event) {
+    m_mouseStart = QVector2D(event->x(), event->y());
+    m_mouseMove = m_mouseStart;
+    if(event->button() == Qt::LeftButton) {
+        m_mouseMode = 1;
+    } else if(event->button() == Qt::MiddleButton) {
+        m_mouseMode = 2;
+    } else if(event->button() == Qt::RightButton) {
+        m_mouseMode = 3;
+    }
+}
+
+void FrameBufferObject::mouseReleaseEvent(QMouseEvent *event) {
+    m_mouseMode = 0;
+}
+
+void FrameBufferObject::mouseMoveEvent(QMouseEvent *event) {
+    if(m_mouseMode != 0) {
+        m_mouseStart = m_mouseMove;
+        m_mouseMove = {(float)event->x(), (float)event->y()};
+    }
 }

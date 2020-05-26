@@ -52,8 +52,8 @@ public:
     void invalidate();
 
     void rotate(const QVector2D &move, const QVector2D &start, const QVector2D &screen);
-    void pan(const QVector2D &move);
-    void zoom(const float &move);
+    void pan(const QVector2D &move, const QVector2D &start, const QVector2D &screen);
+    void zoom(const QVector2D &move, const QVector2D &start, const QVector2D &screen);
 
     void setCenter(QVector3D center);
 
