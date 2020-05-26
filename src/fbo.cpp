@@ -27,9 +27,10 @@
 
 FrameBufferObject::FrameBufferObject(QQuickItem *parent)
         : QQuickFramebufferObject(parent)
-        , m_azimuth(0.0)
-        , m_elevation(15.0)
-        , m_distance(5.0)
+        , m_mouseMode(0)
+        , m_mouseMove(0,0)
+        , m_mouseOld(0,0)
+        , m_screenDim(0,0)
 {
     setMirrorVertically(true);
 }
@@ -39,47 +40,29 @@ QQuickFramebufferObject::Renderer *FrameBufferObject::createRenderer() const
     return new FrameBufferObjectRenderer;
 }
 
-float FrameBufferObject::azimuth() const
-{
-    return m_azimuth;
+void FrameBufferObject::mouseMove(QVector2D move, int mode) {
+    m_mouseMode = mode;
+    m_mouseMove = move;
 }
 
-float FrameBufferObject::distance() const
-{
-    return m_distance;
+void FrameBufferObject::mouseRotate(QVector2D move, QVector2D old, QVector2D screen) {
+    m_mouseMove = move;
+    m_mouseOld = old;
+    m_screenDim = screen;
+    m_mouseMode = 1;
 }
 
-float FrameBufferObject::elevation() const
-{
-    return m_elevation;
-}
-
-void FrameBufferObject::setAzimuth(float azimuth)
-{
-    if (m_azimuth == azimuth)
-        return;
-
-    m_azimuth = azimuth;
-    emit azimuthChanged(azimuth);
+int FrameBufferObject::readMouseMove(QVector2D &move) {
+    move = m_mouseMove;
+    int mode = m_mouseMode;
+    m_mouseMove = QVector2D(0,0);
+    m_mouseMode = 0;
     update();
+    return mode;
 }
 
-void FrameBufferObject::setDistance(float distance)
-{
-    if (m_distance == distance)
-        return;
-
-    m_distance = distance;
-    emit distanceChanged(distance);
-    update();
-}
-
-void FrameBufferObject::setElevation(float elevation)
-{
-    if (m_elevation == elevation)
-        return;
-
-    m_elevation = elevation;
-    emit elevationChanged(elevation);
-    update();
+void FrameBufferObject::readMouseRotate(QVector2D &old, QVector2D &screen) {
+    old = m_mouseOld;
+    screen = m_screenDim;
+    m_mouseOld = QVector2D(0,0);
 }

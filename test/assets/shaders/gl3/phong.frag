@@ -1,4 +1,4 @@
-#version 330 core
+#version 130
 
 uniform struct LightInfo {
     vec4 position;

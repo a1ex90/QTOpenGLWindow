@@ -28,9 +28,18 @@ void FrameBufferObjectRenderer::synchronize(QQuickFramebufferObject *item)
     m_window = item->window();
 
     FrameBufferObject *i = static_cast<FrameBufferObject *>(item);
-    m_render.setAzimuth(i->azimuth());
-    m_render.setElevation(i->elevation());
-    m_render.setDistance(i->distance());
+    QVector2D move;
+    int mode = i->readMouseMove(move);
+    if(mode == 1) {
+        QVector2D old;
+        QVector2D screen;
+        i->readMouseRotate(old, screen);
+        m_render.rotate(move, old, screen);
+    } else if(mode == 2) {
+        m_render.pan(move);
+    } else if(mode == 3) {
+        m_render.zoom(move.y());
+    }
 
     addSync(item);
 }

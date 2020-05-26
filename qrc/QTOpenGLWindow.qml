@@ -10,48 +10,48 @@ Item {
 
     property RenderUnit renderer: RenderUnit{parent: parWindow; width: parWindow.width; height: parWindow.height; objectName: "renderunit_id"}
 
-    Slider {
-        id: sl_distanceControll
-        x: 8
-        y: parent.height - height - 8
-        z: 1
-        value: 40
-        height: parent.height / 3
-        minimumValue: 1
-        maximumValue: 100
-        orientation: Qt.Vertical
-        onValueChanged: {
-            var MINZOOM = 0.1;
-            var MAXZOOM = 10;
-            var logMinZoom = Math.log(MINZOOM);
-            var logMaxZoom = Math.log(MAXZOOM);
-            var logZoom = logMinZoom + (logMaxZoom - logMinZoom)*this.value / (this.maximumValue - this.minimumValue);
-            renderer.distance = Math.exp(logZoom);
+    MouseArea {
+        property bool panning: false
+        property bool rotating: false
+        property bool zooming: false
+        property vector2d startP: Qt.vector2d(0,0);
+        anchors.fill: parent
+        acceptedButtons: Qt.AllButtons
+        onPressed: {
+            startP = Qt.vector2d(mouseX, mouseY);
+            if(mouse.button == Qt.LeftButton) {
+                rotating = true;
+            } else if(mouse.button == Qt.MiddleButton) {
+                panning = true;
+            } else if(mouse.button == Qt.RightButton) {
+                zooming = true;
+            }
         }
-    }
-
-    Slider {
-        id: sl_azimuthControl
-        x: 36
-        y: parent.height - height - 8
-        z: 1
-        maximumValue: 359
-        value: 0
-        height: parent.height / 3
-        orientation: Qt.Vertical
-        onValueChanged: renderer.azimuth = this.value;
-    }
-
-    Slider {
-        id: sl_elevationControl
-        x: 64
-        y: parent.height - height - 8
-        z: 1
-        minimumValue: -89
-        maximumValue: 90
-        value: -20
-        height: parent.height / 3
-        orientation: Qt.Vertical
-        onValueChanged: renderer.elevation = this.value;
+        onReleased: {
+            if(mouse.button == Qt.LeftButton) {
+                rotating = false;
+            } else if(mouse.button == Qt.MiddleButton) {
+                panning = false;
+            } else if(mouse.button == Qt.RightButton) {
+                zooming = false;
+            }
+        }
+        onPositionChanged: {
+            if(rotating) {
+                var moveP = Qt.vector2d(mouseX, mouseY);
+                renderer.mouseRotate(moveP, startP, Qt.vector2d(parent.width, parent.height));
+                startP = moveP;
+            } else if(panning) {
+                var moveP = Qt.vector2d(mouseX, mouseY);
+                var translation = Qt.vector2d(2.0 * (startP.x - moveP.x) / parent.width, 2.0 * (startP.y - moveP.y) / parent.height);
+                renderer.mouseMove(translation, 2);
+                startP = moveP;
+            } else if(zooming) {
+                var moveP = Qt.vector2d(mouseX, mouseY);
+                var zoom = Qt.vector2d(0.0, 1.0 + (moveP.y - startP.y) / parent.height);
+                renderer.mouseMove(zoom, 3);
+                startP = moveP;
+            }
+        }
     }
 }

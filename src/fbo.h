@@ -26,32 +26,22 @@ class FrameBufferObject : public QQuickFramebufferObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(float azimuth READ azimuth WRITE setAzimuth NOTIFY azimuthChanged)
-    Q_PROPERTY(float elevation READ elevation WRITE setElevation NOTIFY elevationChanged)
-    Q_PROPERTY(float distance READ distance WRITE setDistance NOTIFY distanceChanged)
-
 public:
     explicit FrameBufferObject(QQuickItem *parent = 0);
     Renderer *createRenderer() const Q_DECL_OVERRIDE;
 
-    float azimuth() const;
-    float distance() const;
-    float elevation() const;
+    Q_INVOKABLE void mouseMove(QVector2D move, int mode);
+    Q_INVOKABLE void mouseRotate(QVector2D move, QVector2D old, QVector2D screen);
 
-    signals:
-    void azimuthChanged(float azimuth);
-    void distanceChanged(float distance);
-    void elevationChanged(float elevation);
-
-public slots:
-    void setAzimuth(float azimuth);
-    void setDistance(float distance);
-    void setElevation(float elevation);
+    int readMouseMove(QVector2D &move);
+    void readMouseRotate(QVector2D &old, QVector2D &screen);
 
 private:
-    float m_azimuth;
-    float m_elevation;
-    float m_distance;
+    QVector2D m_screenDim;
+    QVector2D m_mouseOld;
+    QVector2D m_mouseMove;
+    // MouseMoveMode 0 = none, 1 = rotate, 2 = pan, 3 = zoom
+    int m_mouseMode;
 };
 
 #endif //QTSIMVIEW_FBO_H

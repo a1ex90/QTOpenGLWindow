@@ -24,8 +24,6 @@ import QtQuick.Controls 1.0
 
 import QtQuick.Dialogs 1.2
 
-//import QtQuick.Scene3D 2.0
-
 import "qrc"
 import opengl.qt.viewer 1.0
 
@@ -48,6 +46,20 @@ ApplicationWindow
         width: 640
         height: 480
         visible: true
+        focus: true
+
+        Keys.onPressed: {
+            if(event.key == Qt.Key_P) {
+                console.log("P");
+            }
+        }
+
+        /*MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                console.log("click at" + mouseX + " " + mouseY);
+            }
+        }*/
 
         QTOpenGLWindow { id:openGLWindow}
     }

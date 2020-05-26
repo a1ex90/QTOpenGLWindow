@@ -1,5 +1,4 @@
-#version 330 core
-
+#version 130
 //uniform bool uGrid;
 
 //uniform vec4 uColorPrimary;

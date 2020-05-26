@@ -37,9 +37,6 @@
 RenderUnit::RenderUnit(QObject *parent)
         : QObject(parent)
         , m_coordinateMirroring(DoNotMirrorCoordinates)
-        , m_azimuth(0.0)
-        , m_elevation(15.0)
-        , m_distance(15.0)
         , m_center(0.0, 0.0, 0.0)
 {
 }
@@ -53,7 +50,7 @@ void RenderUnit::render()
 {
     QOpenGLFunctions *functions = QOpenGLContext::currentContext()->functions();
 
-    QMatrix4x4 modelMatrix;
+    QMatrix4x4 modelMatrix = m_transform.getModel();
     QMatrix4x4 viewMatrix;
     QMatrix4x4 projectionMatrix;
 
@@ -61,18 +58,22 @@ void RenderUnit::render()
 
     modelMatrix.translate(-m_center);
 
-    const float azimuthInRadians = qDegreesToRadians(m_azimuth);
-    const float elevationInRadians = qDegreesToRadians(m_elevation);
+    const float distance = 2.0f;
+    const float azimuth = 0.0f;
+    const float elevation = 15.0f;
+
+    const float azimuthInRadians = qDegreesToRadians(azimuth);
+    const float elevationInRadians = qDegreesToRadians(elevation);
 
     const QVector3D eyePosition(std::cos(elevationInRadians) * std::cos(azimuthInRadians),
                                 std::sin(elevationInRadians),
                                 -std::cos(elevationInRadians) * std::sin(azimuthInRadians));
 
-    QVector3D upVector = qFuzzyCompare(m_elevation, 90.0f)
+    QVector3D upVector = qFuzzyCompare(elevation, 90.0f)
                          ? QVector3D(-std::cos(azimuthInRadians), 0, std::sin(azimuthInRadians))
                          : QVector3D(0, 1, 0);
 
-    viewMatrix.lookAt(eyePosition * m_distance,
+    viewMatrix.lookAt(eyePosition * distance,
                       QVector3D(0,0,0),
                       upVector);
 
@@ -107,19 +108,26 @@ void RenderUnit::invalidate()
     }
 }
 
-void RenderUnit::setAzimuth(float azimuth)
-{
-    m_azimuth = azimuth;
+void RenderUnit::rotate(const QVector2D &move, const QVector2D &start, const QVector2D &screen) {
+    const float r = std::min(screen.x(),screen.y()) / 2.0f;
+    QVector3D startP = projectOnSphere(start, screen, r);
+    QVector3D moveP = projectOnSphere(move, screen, r);
+    float angle = -acos(QVector3D::dotProduct(startP,moveP)) * 180 / M_PI;
+    QVector3D axis = QVector3D::crossProduct(startP, moveP);
+//    axis = m_transform.getModel().inverted() * axis;
+    axis = m_transform.getRot().inverted() * axis;
+    QMatrix4x4 mat = m_transform.getRot();
+    mat.rotate(angle,axis);
+    m_transform.setRot(mat);
 }
 
-void RenderUnit::setElevation(float elevation)
-{
-    m_elevation = elevation;
+void RenderUnit::pan(const QVector2D &move) {
+    QVector3D moveP = {0,move.y(),move.x()};
+    m_transform.setPos(m_transform.getPos() + moveP);
 }
 
-void RenderUnit::setDistance(float distance)
-{
-    m_distance = distance;
+void RenderUnit::zoom(const float &move) {
+    m_transform.setScale(move* m_transform.getScale());
 }
 
 void RenderUnit::setCenter(QVector3D center) {
@@ -140,4 +148,13 @@ void RenderUnit::clearGeometries() {
 
 int RenderUnit::geometryCount() {
     return m_geometries.size();
+}
+
+QVector3D RenderUnit::projectOnSphere(QVector2D point, const QVector2D &screen, const float &r) {
+    point.setX(point.x() - screen.x() / 2.0f);
+    point.setY(-(screen.y() / 2.0f - point.y()) );
+    float a = std::min(r*r, point.x()*point.x() + point.y()*point.y());
+    float z = sqrt(r*r - a);
+    float l = sqrt(point.x()*point.x() + point.y()*point.y() + z*z);
+    return { z / l, point.y() / l, point.x() / l};
 }

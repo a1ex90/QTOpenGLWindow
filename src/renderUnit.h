@@ -51,9 +51,10 @@ public:
     void render();
     void invalidate();
 
-    void setAzimuth(float azimuth);
-    void setElevation(float elevation);
-    void setDistance(float distance);
+    void rotate(const QVector2D &move, const QVector2D &start, const QVector2D &screen);
+    void pan(const QVector2D &move);
+    void zoom(const float &move);
+
     void setCenter(QVector3D center);
 
     void addGeometry(const std::shared_ptr<Geometry> &geometry);
@@ -63,14 +64,15 @@ public:
     int geometryCount();
 
 private:
+    QVector3D projectOnSphere(QVector2D point, const QVector2D &screen, const float &r);
     // all drawable geometry
     std::vector<std::shared_ptr<Geometry>> m_geometries;
 
+    // Model Transformation
+    Transform m_transform;
+
     CoordinateMirroring m_coordinateMirroring;
 
-    float m_azimuth;
-    float m_elevation;
-    float m_distance;
     QVector3D m_center;
 };
 
