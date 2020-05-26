@@ -54,15 +54,19 @@ void FrameBufferObject::mousePressEvent(QMouseEvent *event) {
     m_mouseMove = m_mouseStart;
     if(event->button() == Qt::LeftButton) {
         m_mouseMode = 1;
+        this->setCursor(Qt::ClosedHandCursor);
     } else if(event->button() == Qt::MiddleButton) {
         m_mouseMode = 2;
+        this->setCursor(Qt::SizeAllCursor);
     } else if(event->button() == Qt::RightButton) {
         m_mouseMode = 3;
+        this->setCursor(Qt::SizeVerCursor);
     }
 }
 
 void FrameBufferObject::mouseReleaseEvent(QMouseEvent *event) {
     m_mouseMode = 0;
+    this->setCursor(Qt::ArrowCursor);
 }
 
 void FrameBufferObject::mouseMoveEvent(QMouseEvent *event) {
