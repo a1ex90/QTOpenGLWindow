@@ -1,5 +1,5 @@
 # QTOpenGLWindow
-This is an OpenGL Viewer Item for Qt5, which can be added as a submodule and embedded in Qt Quick 2 applications.
+This is an OpenGL Viewer Item for Qt5, which can be added as a submodule and embedded in Qt Quick 2 applications. Hold right-mouse-button for zooming, middle-mouse-button for panning and left-mouse-button for arcball rotation.
 
 ## Requirements
 - Qt 5.9.5

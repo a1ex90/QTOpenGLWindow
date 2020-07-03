@@ -60,6 +60,12 @@ public:
     void setColor(QVector3D color);
 
     /**
+     * Sets the rendered size of the points
+     * @param ps desired point size
+     */
+    void setPointSize(const float &ps);
+
+    /**
      * Function to clear buffers
      */
     void flush();
@@ -79,6 +85,8 @@ protected:
     QVector3D m_centroid;
     // Color of points
     QVector3D m_color;
+    // Size of the points
+    float m_pointSize;
 };
 
 #endif //QTSIMVIEW_POINTS_H

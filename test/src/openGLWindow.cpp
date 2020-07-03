@@ -44,6 +44,7 @@ public:
 //        points->initialize("../../test/assets/shaders/gl3/part.frag","../../test/assets/shaders/gl3/part.vert");
 //        points->changePoints("../../test/assets/obj/points.ply");
 //        points->setColor(QVector3D(1.0,0.0,0));
+//        points->setPointSize(4.0f);
 //        m_render.addGeometry(points);
 
         std::shared_ptr<Grid> gd = std::make_shared<Grid>();

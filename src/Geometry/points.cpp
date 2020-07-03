@@ -30,6 +30,7 @@ PointCloud::PointCloud()
         : Geometry(0, GeometryType::POINTCLOUD)
         , m_positionsBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
         , m_color(QVector3D(0,0,0))
+        , m_pointSize(1.0f)
 {}
 
 /******************************************************
@@ -46,6 +47,7 @@ void PointCloud::render(QMatrix4x4 modelMatrix, QMatrix4x4 viewMatrix, QMatrix4x
     m_shader->setUniformValue("modelViewMatrix", modelViewMatrix);
     m_shader->setUniformValue("mvp", modelViewProjectionMatrix);
     m_shader->setUniformValue("color", QVector4D(m_color, 1.0));
+    m_shader->setUniformValue("ps", m_pointSize);
 
     m_vao->bind();
     functions->glEnable(GL_PROGRAM_POINT_SIZE);
@@ -107,6 +109,10 @@ void PointCloud::changePoints(float *dataHead, int length) {
 
 void PointCloud::setColor(QVector3D color) {
     m_color = color;
+}
+
+void PointCloud::setPointSize(const float &ps) {
+    m_pointSize = ps;
 }
 
 void PointCloud::flush() {
