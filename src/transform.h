@@ -14,14 +14,13 @@
  *                University of Applied Sciences
  *     @author:   Alex Sommer
  *    @version:   1.0
- *       @date:   18.02.2020
+ *       @date:   18.02.20
  *****************************************************/
 #ifndef QTSIMVIEW_TRANSFORM_H
 #define QTSIMVIEW_TRANSFORM_H
 
 #include <QtGui/QVector3D>
 #include <QtGui/QMatrix4x4>
-
 
 /**
  * \class Transform

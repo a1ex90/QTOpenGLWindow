@@ -14,7 +14,7 @@
  *                University of Applied Sciences
  *     @author:   Alex Sommer
  *    @version:   1.0
- *       @date:   11.03.2020
+ *       @date:   11.03.20
  *****************************************************/
 
 #ifndef QTSIMVIEW_POINTS_H
@@ -23,8 +23,17 @@
 #include "geometry.h"
 #include <QOpenGLBuffer>
 
+/**
+ * \class PointCloud
+ *
+ * \brief Renderable geometry for point cloud/particle data. Draws
+ * given vertices as points.
+ */
 class PointCloud : public Geometry {
 public:
+    /**
+     * Constructor
+     */
     PointCloud();
 
     /**

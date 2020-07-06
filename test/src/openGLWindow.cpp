@@ -14,7 +14,7 @@
  *                University of Applied Sciences
  *     @author:   Alex Sommer
  *    @version:   1.0
- *       @date:   12.02.2020
+ *       @date:   12.02.20
  *****************************************************/
 
 #include "openGLWindow.h"
@@ -40,12 +40,6 @@ public:
         t1.setScale(scaling);
         ms->setTransform(t1);
         m_render.addGeometry(ms);
-//        std::shared_ptr<PointCloud> points = std::make_shared<PointCloud>();
-//        points->initialize("../../test/assets/shaders/gl3/part.frag","../../test/assets/shaders/gl3/part.vert");
-//        points->changePoints("../../test/assets/obj/points.ply");
-//        points->setColor(QVector3D(1.0,0.0,0));
-//        points->setPointSize(4.0f);
-//        m_render.addGeometry(points);
 
         std::shared_ptr<Grid> gd = std::make_shared<Grid>();
         gd->initialize("../../test/assets/shaders/gl3/checkerboard.frag", "../../test/assets/shaders/gl3/checkerboard.vert");

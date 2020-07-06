@@ -51,6 +51,7 @@ void PointCloud::render(QMatrix4x4 modelMatrix, QMatrix4x4 viewMatrix, QMatrix4x
 
     m_vao->bind();
     functions->glEnable(GL_PROGRAM_POINT_SIZE);
+    functions->glEnable(GL_POINT_SMOOTH);
     functions->glDrawArrays(GL_POINTS, 0, m_drawCount);
     m_vao->release();
 }

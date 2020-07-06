@@ -23,8 +23,16 @@
 #include "geometry.h"
 #include <QOpenGLBuffer>
 
+/**
+ * \class Grid
+ *
+ * \brief Renderable geometry for a checkboard grid.
+ */
 class Grid : public Geometry {
 public:
+    /**
+     * Constructor
+     */
     Grid();
 
     /**

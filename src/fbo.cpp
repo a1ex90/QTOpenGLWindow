@@ -23,8 +23,6 @@
 #include <QOpenGLFramebufferObject>
 #include "fboRenderer.h"
 
-// FBO implementation
-
 FrameBufferObject::FrameBufferObject(QQuickItem *parent)
         : QQuickFramebufferObject(parent)
         , m_mouseMode(0)

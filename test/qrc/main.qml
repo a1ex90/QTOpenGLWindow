@@ -14,7 +14,7 @@
  *                University of Applied Sciences
  *     @author:   Alex Sommer
  *    @version:   1.0
- *       @date:   05.02.2020
+ *       @date:   05.02.20
  *****************************************************/
 
 // Icons from open source feathericons.com
@@ -53,13 +53,6 @@ ApplicationWindow
                 console.log("P");
             }
         }
-
-        /*MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                console.log("click at" + mouseX + " " + mouseY);
-            }
-        }*/
 
         QTOpenGLWindow { id:openGLWindow}
     }

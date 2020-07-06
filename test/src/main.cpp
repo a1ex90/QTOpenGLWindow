@@ -14,7 +14,7 @@
  *                University of Applied Sciences
  *     @author:   Alex Sommer
  *    @version:   1.0
- *       @date:   05.02.2020
+ *       @date:   05.02.20
  *****************************************************/
 
 #include <QApplication>

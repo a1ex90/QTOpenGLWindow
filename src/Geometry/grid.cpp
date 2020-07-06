@@ -14,7 +14,7 @@
  *                University of Applied Sciences
  *     @author:   Alex Sommer
  *    @version:   1.0
- *       @date:   11.03.2020
+ *       @date:   11.03.20
  *****************************************************/
 
 #include "grid.h"

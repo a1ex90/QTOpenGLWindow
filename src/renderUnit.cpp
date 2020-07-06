@@ -95,7 +95,6 @@ void RenderUnit::render()
     functions->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     functions->glEnable(GL_DEPTH_TEST);
     functions->glEnable(GL_BLEND);
-    functions->glEnable(GL_POINT_SMOOTH);
 
     for(std::shared_ptr<Geometry> geo: m_geometries) {
         geo->render(modelMatrix, viewMatrix, projectionMatrix);
@@ -116,7 +115,6 @@ void RenderUnit::rotate(const QVector2D &move, const QVector2D &start, const QVe
         QVector3D moveP = projectOnSphere(move, screen, r);
         float angle = -acos(QVector3D::dotProduct(startP,moveP)) * 180 / M_PI;
         QVector3D axis = QVector3D::crossProduct(startP, moveP);
-//    axis = m_transform.getModel().inverted() * axis;
         axis = m_transform.getRot().inverted() * axis;
         QMatrix4x4 mat = m_transform.getRot();
         mat.rotate(angle,axis);
@@ -136,7 +134,7 @@ void RenderUnit::zoom(const QVector2D &move, const QVector2D &start, const QVect
     m_transform.setScale(zoom * m_transform.getScale());
 }
 
-void RenderUnit::setCenter(QVector3D center) {
+void RenderUnit::setCenter(const QVector3D &center) {
     m_center = center;
 }
 

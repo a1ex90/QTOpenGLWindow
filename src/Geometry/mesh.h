@@ -14,7 +14,7 @@
  *                University of Applied Sciences
  *     @author:   Alex Sommer
  *    @version:   1.0
- *       @date:   11.03.2020
+ *       @date:   11.03.20
  *****************************************************/
 
 #ifndef QTSIMVIEW_MESH_H
@@ -24,8 +24,17 @@
 #include "../transform.h"
 #include <QOpenGLBuffer>
 
+/**
+ * \class Mesh
+ *
+ * \brief Renderable geometry for triangular meshes. Draws
+ * given vertices as a shaded mesh.
+ */
 class Mesh : public Geometry {
 public:
+    /**
+     * Constructor
+     */
     Mesh();
 
     /**

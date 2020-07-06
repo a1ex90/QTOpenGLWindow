@@ -14,7 +14,7 @@
  *                University of Applied Sciences
  *     @author:   Alex Sommer
  *    @version:   1.0
- *       @date:   12.02.2020
+ *       @date:   12.02.20
  *****************************************************/
 
 #ifndef QTSIMVIEW_OPENGLWINDOW_H

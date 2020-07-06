@@ -30,6 +30,11 @@ enum GeometryType {
     POINTCLOUD
 };
 
+/**
+ * \class Geometry
+ *
+ * \brief Interface for all renderable geometry.
+ */
 class Geometry {
 public:
     /**
