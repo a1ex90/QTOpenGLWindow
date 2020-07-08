@@ -22,9 +22,8 @@ git submodule add git@github.com:a1ex90/QTOpenGLWindow.git ext/QTOpenGLWindow
 2. add this module to the project CMake file
 ```
 add_subdirectory(ext/QTOpenGLWindow)
-include_directories(ext/QTOpenGLWindow/src)
 ...
-target_link_libraries(
+target_link_libraries(...
         QTOpenGLWindow
         ...)
 ```
