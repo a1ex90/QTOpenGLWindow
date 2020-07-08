@@ -19,8 +19,8 @@
 
 #include "openGLWindow.h"
 
-#include "../../src/renderUnit.h"
-#include "../../src/fboRenderer.h"
+#include "renderUnit.h"
+#include "fboRenderer.h"
 
 #include <QQuickWindow>
 #include <QOpenGLFramebufferObject>

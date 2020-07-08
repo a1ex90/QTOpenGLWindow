@@ -29,3 +29,5 @@ target_link_libraries(${PROJECT_NAME}
         Qt5::Core
         Qt5::Quick
         Qt5::Widgets)
+
+target_include_directories(${PROJECT_NAME} PUBLIC src)

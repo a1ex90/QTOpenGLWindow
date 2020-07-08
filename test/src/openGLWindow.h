@@ -20,9 +20,9 @@
 #ifndef QTSIMVIEW_OPENGLWINDOW_H
 #define QTSIMVIEW_OPENGLWINDOW_H
 
-#include "../../src/fbo.h"
+#include "fbo.h"
 
-#include "../../src/transform.h"
+#include "transform.h"
 
 class MyFrameBufferObject : public FrameBufferObject
 {
