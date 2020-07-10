@@ -30,6 +30,7 @@
 #include "Geometry/mesh.h"
 #include "Geometry/grid.h"
 #include "Geometry/points.h"
+#include "Geometry/spheres.h"
 
 class QOpenGLBuffer;
 class QOpenGLShaderProgram;
