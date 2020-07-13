@@ -26,11 +26,7 @@
 #include <QOpenGLTexture>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLShaderProgram>
-
 #include <QMatrix4x4>
-
-#include <QDebug>
-
 #include <cmath>
 #include <QtMath>
 
@@ -39,6 +35,16 @@ RenderUnit::RenderUnit(QObject *parent)
         , m_coordinateMirroring(DoNotMirrorCoordinates)
         , m_center(0.0, 0.0, 0.0)
 {
+    const float azimuth = 0.0f;
+    const float elevation = 15.0f;
+
+    const float distance = 2.0f;
+    const float azimuthInRadians = qDegreesToRadians(azimuth);
+    const float elevationInRadians = qDegreesToRadians(elevation);
+
+    m_eye = distance * QVector3D(std::cos(elevationInRadians) * std::cos(azimuthInRadians),
+                                std::sin(elevationInRadians),
+                                -std::cos(elevationInRadians) * std::sin(azimuthInRadians));
 }
 
 RenderUnit::~RenderUnit()
@@ -58,24 +64,9 @@ void RenderUnit::render()
 
     modelMatrix.translate(-m_center);
 
-    const float distance = 2.0f;
-    const float azimuth = 0.0f;
-    const float elevation = 15.0f;
-
-    const float azimuthInRadians = qDegreesToRadians(azimuth);
-    const float elevationInRadians = qDegreesToRadians(elevation);
-
-    const QVector3D eyePosition(std::cos(elevationInRadians) * std::cos(azimuthInRadians),
-                                std::sin(elevationInRadians),
-                                -std::cos(elevationInRadians) * std::sin(azimuthInRadians));
-
-    QVector3D upVector = qFuzzyCompare(elevation, 90.0f)
-                         ? QVector3D(-std::cos(azimuthInRadians), 0, std::sin(azimuthInRadians))
-                         : QVector3D(0, 1, 0);
-
-    viewMatrix.lookAt(eyePosition * distance,
+    viewMatrix.lookAt(m_eye,
                       QVector3D(0,0,0),
-                      upVector);
+                      QVector3D(0,1,0));
 
 
     GLint viewportSize[4];
@@ -97,7 +88,7 @@ void RenderUnit::render()
     functions->glEnable(GL_BLEND);
 
     for(std::shared_ptr<Geometry> geo: m_geometries) {
-        geo->render(modelMatrix, viewMatrix, projectionMatrix);
+        geo->render(m_eye, modelMatrix, viewMatrix, projectionMatrix);
     }
 }
 

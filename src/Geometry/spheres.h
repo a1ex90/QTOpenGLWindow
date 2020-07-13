@@ -31,12 +31,13 @@ public:
     SphereCloud();
 
     /**
-     * Render function for the geometry
+     * Override this with the render function for the geometry
+     * @param eye Eye Position
      * @param mm Model Matrix
      * @param vm View Matrix
      * @param pm Projection Matrix
      */
-    virtual void render(QMatrix4x4 mm, QMatrix4x4 vm, QMatrix4x4 pm) override;
+    virtual void render(const QVector3D &eye, const QMatrix4x4 &mm, const QMatrix4x4 &vm, const QMatrix4x4 &pm) override;
 
 protected:
 

@@ -39,7 +39,7 @@ Mesh::Mesh()
  * Public Functions
  *****************************************************/
 
-void Mesh::render(QMatrix4x4 modelMatrix, QMatrix4x4 viewMatrix, QMatrix4x4 projectionMatrix) {
+void Mesh::render(const QVector3D &eye, const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix, const QMatrix4x4 &projectionMatrix) {
     QOpenGLFunctions *functions = QOpenGLContext::currentContext()->functions();
 
     const QMatrix4x4 modelViewMatrix = viewMatrix * modelMatrix;

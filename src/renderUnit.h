@@ -143,6 +143,9 @@ protected:
 
     // Center of projection
     QVector3D m_center;
+
+    // Eye position;
+    QVector3D m_eye;
 };
 
 

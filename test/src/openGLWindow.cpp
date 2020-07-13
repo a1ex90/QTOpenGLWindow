@@ -52,7 +52,7 @@ public:
         ps->initialize("../../test/assets/shaders/gl3/partAsSpheres.frag", "../../test/assets/shaders/gl3/partAsSpheres.vert");
         ps->changePoints("../../test/assets/obj/points.ply");
         ps->setColor(QVector3D(1.0,0,0));
-        ps->setPointSize(20.0);
+        ps->setPointSize(1.0f/64.0f);
         m_render.addGeometry(ps);
 
         std::shared_ptr<Grid> gd = std::make_shared<Grid>();
