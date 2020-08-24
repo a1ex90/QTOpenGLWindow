@@ -27,12 +27,13 @@
  *****************************************************/
 
 Mesh::Mesh()
-    : Geometry(0, GeometryType::MESH)
-    , m_positionsBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
-    , m_normalsBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
-    , m_indicesBuffer(new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer))
-    , m_transform()
-    , m_externalTransform()
+        : Geometry(0, GeometryType::MESH)
+        , m_positionsBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
+        , m_normalsBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
+        , m_indicesBuffer(new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer))
+        , m_transform()
+        , m_externalTransform()
+        , m_fileChangeLoaded(true)
 {}
 
 /******************************************************
@@ -76,46 +77,8 @@ void Mesh::invalidate() {
 }
 
 void Mesh::changeMesh(QString file) {
-    ObjLoader loader;
-    if(file.length() == 0) {
-        flush();
-        return;
-    }
-
-    if (!loader.load(file))
-        qFatal("Could not load mesh");
-    m_vao->bind();
-
-    const QVector<QVector3D> vertices = loader.vertices();
-
-    m_positionsBuffer->bind();
-    m_positionsBuffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    m_positionsBuffer->allocate(vertices.constData(), vertices.size() * sizeof(QVector3D));
-
-    const QVector<QVector3D> normals = loader.normals();
-
-    m_normalsBuffer->bind();
-    m_normalsBuffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    m_normalsBuffer->allocate(normals.constData(), normals.size() * sizeof(QVector3D));
-
-    const QVector<unsigned int> indices = loader.indices();
-    m_drawCount = indices.size();
-
-    m_indicesBuffer->bind();
-    m_indicesBuffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    m_indicesBuffer->allocate(indices.constData(), indices.size() * sizeof(unsigned int));
-
-    m_shader->bind();
-
-    m_positionsBuffer->bind();
-    m_shader->enableAttributeArray("vertexPosition");
-    m_shader->setAttributeBuffer("vertexPosition", GL_FLOAT, 0, 3);
-
-    m_normalsBuffer->bind();
-    m_shader->enableAttributeArray("vertexNormal");
-    m_shader->setAttributeBuffer("vertexNormal", GL_FLOAT, 0, 3);
-
-    m_vao->release();
+    m_meshFile = file;
+    m_fileChangeLoaded = false;
 }
 
 void Mesh::flush() {
@@ -183,4 +146,54 @@ void Mesh::initializeBuffers() {
         qFatal("Unable to create vertex buffer");
     if (!m_indicesBuffer->create())
         qFatal("Unable to create index buffer");
+}
+
+void Mesh::additionalChanges() {
+    if (!m_fileChangeLoaded)
+        changeMesh();
+}
+
+void Mesh::changeMesh() {
+    ObjLoader loader;
+    if (m_meshFile.length() == 0) {
+        flush();
+        return;
+    }
+
+    if (!loader.load(m_meshFile))
+        qFatal("Could not load mesh");
+    m_vao->bind();
+
+    const QVector<QVector3D> vertices = loader.vertices();
+
+    m_positionsBuffer->bind();
+    m_positionsBuffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    m_positionsBuffer->allocate(vertices.constData(), vertices.size() * sizeof(QVector3D));
+
+    const QVector<QVector3D> normals = loader.normals();
+
+    m_normalsBuffer->bind();
+    m_normalsBuffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    m_normalsBuffer->allocate(normals.constData(), normals.size() * sizeof(QVector3D));
+
+    const QVector<unsigned int> indices = loader.indices();
+    m_drawCount = indices.size();
+
+    m_indicesBuffer->bind();
+    m_indicesBuffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    m_indicesBuffer->allocate(indices.constData(), indices.size() * sizeof(unsigned int));
+
+    m_shader->bind();
+
+    m_positionsBuffer->bind();
+    m_shader->enableAttributeArray("vertexPosition");
+    m_shader->setAttributeBuffer("vertexPosition", GL_FLOAT, 0, 3);
+
+    m_normalsBuffer->bind();
+    m_shader->enableAttributeArray("vertexNormal");
+    m_shader->setAttributeBuffer("vertexNormal", GL_FLOAT, 0, 3);
+
+    m_vao->release();
+
+    m_fileChangeLoaded = true;
 }

@@ -26,10 +26,12 @@
  *****************************************************/
 
 Grid::Grid()
-    : Geometry(6, GeometryType::GRID)
-    , m_positionsBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
-    , m_texCoordBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
-    , m_indicesBuffer(new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer))
+        : Geometry(6, GeometryType::GRID)
+        , m_positionsBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
+        , m_texCoordBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
+        , m_indicesBuffer(new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer))
+        , m_offset(QVector3D(0,0,0))
+        , m_gridInitialized(false)
 {}
 
 /******************************************************
@@ -60,15 +62,38 @@ void Grid::invalidate() {
 }
 
 void Grid::initGrid(QVector3D offset) {
+    m_offset = offset;
+    m_gridInitialized = false;
+}
+
+/******************************************************
+ * Private Functions
+ *****************************************************/
+
+void Grid::initializeBuffers() {
+    if (!m_positionsBuffer->create())
+        qFatal("Unable to create position buffer");
+    if (!m_texCoordBuffer->create())
+        qFatal("Unable to create vertex buffer");
+    if (!m_indicesBuffer->create())
+        qFatal("Unable to create index buffer");
+}
+
+void Grid::additionalChanges() {
+    if(!m_gridInitialized)
+        initGrid();
+}
+
+void Grid::initGrid() {
     const float c0 = -0.5f;
     const float c1 = 0.5f;
 
     const float vertexPositions[] =
             {
-                    offset.x() + c0, offset.y(), offset.z() + c0,
-                    offset.x() + c1, offset.y(), offset.z() + c0,
-                    offset.x() + c1, offset.y(), offset.z() + c1,
-                    offset.x() + c0, offset.y(), offset.z() + c1
+                    m_offset.x() + c0, m_offset.y(), m_offset.z() + c0,
+                    m_offset.x() + c1, m_offset.y(), m_offset.z() + c0,
+                    m_offset.x() + c1, m_offset.y(), m_offset.z() + c1,
+                    m_offset.x() + c0, m_offset.y(), m_offset.z() + c1
             };
 
     const float texW = 30.0f;
@@ -109,17 +134,6 @@ void Grid::initGrid(QVector3D offset) {
     m_shader->setAttributeBuffer("aTexcoord", GL_FLOAT, 0, 2);
 
     m_vao->release();
-}
 
-/******************************************************
- * Private Functions
- *****************************************************/
-
-void Grid::initializeBuffers() {
-    if (!m_positionsBuffer->create())
-        qFatal("Unable to create position buffer");
-    if (!m_texCoordBuffer->create())
-        qFatal("Unable to create vertex buffer");
-    if (!m_indicesBuffer->create())
-        qFatal("Unable to create index buffer");
+    m_gridInitialized = true;
 }

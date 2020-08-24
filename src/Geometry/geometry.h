@@ -44,10 +44,11 @@ public:
      * @param type geometry type
      */
     Geometry(const unsigned int& drawCount, GeometryType type)
-        : m_type(type)
-        , m_shader()
-        , m_vao(new QOpenGLVertexArrayObject)
-        , m_drawCount(drawCount)
+            : m_type(type)
+            , m_shader()
+            , m_vao(new QOpenGLVertexArrayObject)
+            , m_drawCount(drawCount)
+            , m_isInitialized(false)
     {}
 
     /**
@@ -56,20 +57,19 @@ public:
      * @param vertexShader Vertex Shader File
      */
     void initialize(QString fragmentShader, QString vertexShader) {
-        if (m_vao->isCreated())
-            return; // already initialized
-        if (!m_vao->create())
-            qFatal("Unable to create VAO");
-        initializeBuffers();
-        m_shader.reset(new QOpenGLShaderProgram);
-        if (!m_shader->create())
-            qFatal("Unable to create shader program");
-        if (!m_shader->addShaderFromSourceFile(QOpenGLShader::Vertex, vertexShader))
-            qFatal("Vertex shader compilation failed");
-        if (!m_shader->addShaderFromSourceFile(QOpenGLShader::Fragment, fragmentShader))
-            qFatal("Fragment shader compilation failed");
-        if (!m_shader->link())
-            qFatal("Shader program not linked");
+        m_isInitialized = false;
+        m_fragmentShader = fragmentShader;
+        m_vertexShader = vertexShader;
+    }
+
+    /**
+     * changes that need happen during synchronization
+     * to prevent false context errors
+     */
+    void performChanges() {
+        if (!m_isInitialized)
+            initialize();
+        additionalChanges();
     }
 
     /**
@@ -95,6 +95,32 @@ public:
     }
 private:
     /**
+     * Initialization of buffers and shader
+     */
+    void initialize() {
+        if (m_vao->isCreated())
+            return; // already initialized
+        if (!m_vao->create())
+            qFatal("Unable to create VAO");
+        initializeBuffers();
+        m_shader.reset(new QOpenGLShaderProgram);
+        if (!m_shader->create())
+            qFatal("Unable to create shader program");
+        if (!m_shader->addShaderFromSourceFile(QOpenGLShader::Vertex, m_vertexShader))
+            qFatal("Vertex shader compilation failed");
+        if (!m_shader->addShaderFromSourceFile(QOpenGLShader::Fragment, m_fragmentShader))
+            qFatal("Fragment shader compilation failed");
+        if (!m_shader->link())
+            qFatal("Shader program not linked");
+        m_isInitialized = true;
+    }
+
+    /**
+     * Override this with additional changes that need happen during
+     * synchronization to prevent false context errors
+     */
+    virtual void additionalChanges() = 0;
+    /**
      * Override this with initialization of position buffers, etc.
      */
     virtual void initializeBuffers() = 0;
@@ -107,7 +133,12 @@ protected:
     unsigned int m_drawCount;
     // Geometry Type;
     GeometryType m_type;
+    // Fragment Shader File;
+    QString m_fragmentShader;
+    // Vertex Shader File
+    QString m_vertexShader;
+    // Weather the Shader has been initialized
+    bool m_isInitialized;
 };
-
 
 #endif //QTSIMVIEW_GEOMETRY_H

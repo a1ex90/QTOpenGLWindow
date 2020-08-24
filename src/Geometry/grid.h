@@ -57,6 +57,8 @@ public:
 
 private:
     virtual void initializeBuffers() override;
+    virtual void additionalChanges() override;
+    void initGrid();
 protected:
     // Grid Vertex position buffer
     QScopedPointer<QOpenGLBuffer> m_positionsBuffer;
@@ -64,7 +66,10 @@ protected:
     QScopedPointer<QOpenGLBuffer> m_texCoordBuffer;
     // Triangle indices buffer
     QScopedPointer<QOpenGLBuffer> m_indicesBuffer;
+    // Grid offset from 0,0,0
+    QVector3D m_offset;
+    // Weather the grid has been initialized
+    bool m_gridInitialized;
 };
-
 
 #endif //QTSIMVIEW_GRID_H

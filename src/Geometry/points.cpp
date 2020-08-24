@@ -18,7 +18,6 @@
  *****************************************************/
 
 #include "points.h"
-#include "../Helper/plyLoader.h"
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 
@@ -31,6 +30,7 @@ PointCloud::PointCloud()
         , m_positionsBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
         , m_color(QVector3D(0,0,0))
         , m_pointSize(1.0f)
+        , m_pointsChanged(false)
 {}
 
 /******************************************************
@@ -62,50 +62,10 @@ void PointCloud::invalidate() {
     m_vao->destroy();
 }
 
-void PointCloud::changePoints(QString file) {
-    if(file.length() == 0) {
-        flush();
-        return;
-    }
-
-    PlyLoader loader;
-    if (!loader.load(file))
-        qFatal("Could not load particles");
-    m_vao->bind();
-
-    const QVector<QVector3D> positions = loader.positions();
-    m_drawCount = positions.size();
-    m_centroid = loader.centroid();
-
-    m_positionsBuffer->bind();
-    m_positionsBuffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    m_positionsBuffer->allocate(positions.constData(), positions.size() * sizeof(QVector3D));
-
-    m_shader->bind();
-
-    m_positionsBuffer->bind();
-    m_shader->enableAttributeArray("vertexPosition");
-    m_shader->setAttributeBuffer("vertexPosition", GL_FLOAT, 0, 3);
-
-    m_vao->release();
-}
-
 void PointCloud::changePoints(float *dataHead, int length) {
+    m_dataHead = dataHead;
     m_drawCount = length;
-
-    m_vao->bind();
-
-    m_positionsBuffer->bind();
-    m_positionsBuffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    m_positionsBuffer->allocate(dataHead, 3 * length * sizeof(float));
-
-    m_shader->bind();
-
-    m_positionsBuffer->bind();
-    m_shader->enableAttributeArray("vertexPosition");
-    m_shader->setAttributeBuffer("vertexPosition", GL_FLOAT, 0, 3);
-
-    m_vao->release();
+    m_pointsChanged = true;
 }
 
 void PointCloud::setColor(QVector3D color) {
@@ -147,4 +107,27 @@ QVector3D PointCloud::centroid() {
 void PointCloud::initializeBuffers() {
     if (!m_positionsBuffer->create())
         qFatal("Unable to create position buffer");
+}
+
+void PointCloud::additionalChanges() {
+    if (m_pointsChanged)
+        changePoints();
+}
+
+void PointCloud::changePoints() {
+    m_vao->bind();
+
+    m_positionsBuffer->bind();
+    m_positionsBuffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    m_positionsBuffer->allocate(m_dataHead, 3 * m_drawCount * sizeof(float));
+
+    m_shader->bind();
+
+    m_positionsBuffer->bind();
+    m_shader->enableAttributeArray("vertexPosition");
+    m_shader->setAttributeBuffer("vertexPosition", GL_FLOAT, 0, 3);
+
+    m_vao->release();
+
+    m_pointsChanged = false;
 }

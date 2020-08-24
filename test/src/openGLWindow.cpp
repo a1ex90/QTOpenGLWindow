@@ -31,34 +31,27 @@ class MyFrameBufferObjectRenderer : public FrameBufferObjectRenderer
 public:
     MyFrameBufferObjectRenderer()
     {
-//        std::shared_ptr<Mesh> ms = std::make_shared<Mesh>();
-//        ms->initialize("../../test/assets/shaders/gl3/phong.frag", "../../test/assets/shaders/gl3/phong.vert");
-//        ms->changeMesh("../../test/assets/obj/Squirrel.obj");
-//        Transform t1;
-//        float scaling = 0.3;
-//        t1.setPos(scaling * QVector3D(0.05,0.43,4.272));
-//        t1.setScale(scaling);
-//        ms->setTransform(t1);
-//        m_render.addGeometry(ms);
-
-//        std::shared_ptr<PointCloud> ps = std::make_shared<PointCloud>();
-//        ps->initialize("../../test/assets/shaders/gl3/part.frag", "../../test/assets/shaders/gl3/part.vert");
-//        ps->changePoints("../../test/assets/obj/points.ply");
-//        ps->setColor(QVector3D(1.0,0,0));
-//        ps->setPointSize(3.0);
-//        m_render.addGeometry(ps);
-
-        std::shared_ptr<SphereCloud> ps = std::make_shared<SphereCloud>();
-        ps->initialize("../../test/assets/shaders/gl3/partAsSpheres.frag", "../../test/assets/shaders/gl3/partAsSpheres.vert");
-        ps->changePoints("../../test/assets/obj/points.ply");
-        ps->setColor(QVector3D(1.0,0,0));
-        ps->setPointSize(1.0f/64.0f);
-        m_render.addGeometry(ps);
+        std::shared_ptr<Mesh> ms = std::make_shared<Mesh>();
+        ms->initialize("../../test/assets/shaders/gl3/phong.frag", "../../test/assets/shaders/gl3/phong.vert");
+        ms->changeMesh("../../test/assets/obj/Squirrel.obj");
+        Transform t1;
+        float scaling = 0.3;
+        t1.setPos(scaling * QVector3D(0.05,0.43,4.272));
+        t1.setScale(scaling);
+        ms->setTransform(t1);
+        m_render.addGeometry(ms);
 
         std::shared_ptr<Grid> gd = std::make_shared<Grid>();
         gd->initialize("../../test/assets/shaders/gl3/checkerboard.frag", "../../test/assets/shaders/gl3/checkerboard.vert");
         gd->initGrid(QVector3D(0,0,0));
         m_render.addGeometry(gd);
+    }
+
+    void addSync(QQuickFramebufferObject *item) Q_DECL_OVERRIDE
+    {
+        for (int j = 0; j < m_render.geometryCount(); j++) {
+            m_render.getGeometry(j)->performChanges();
+        }
     }
 };
 

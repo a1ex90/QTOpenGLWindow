@@ -81,6 +81,8 @@ public:
     void updateExternalTransform(float* transform);
 private:
     virtual void initializeBuffers() override;
+    virtual void additionalChanges() override;
+    void changeMesh();
 protected:
     // Vertex position buffer
     QScopedPointer<QOpenGLBuffer> m_positionsBuffer;
@@ -92,7 +94,10 @@ protected:
     Transform m_transform;
     // External editable transformation
     QMatrix4x4 m_externalTransform;
+    // Mesh file
+    QString m_meshFile;
+    // Weather the mesh has been loaded to buffers
+    bool m_fileChangeLoaded;
 };
-
 
 #endif //QTSIMVIEW_MESH_H

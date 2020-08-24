@@ -51,12 +51,6 @@ public:
     virtual void invalidate() override;
 
     /**
-     * Changes points to given .ply file
-     * @param file filepath to .ply file
-     */
-    void changePoints(QString file);
-
-    /**
      * Changes points to given array
      * @param dataHead data head of the array data
      * @param length number of elements to draw (1/3 of array length)
@@ -88,6 +82,8 @@ public:
 
 private:
     virtual void initializeBuffers() override;
+    virtual void additionalChanges() override;
+    void changePoints();
 protected:
     // Points position buffer
     QScopedPointer<QOpenGLBuffer> m_positionsBuffer;
@@ -97,6 +93,10 @@ protected:
     QVector3D m_color;
     // Size of the points
     float m_pointSize;
+    // Pointer to point cloud datahead
+    float* m_dataHead;
+    // Weather points have changed
+    bool m_pointsChanged;
 };
 
 #endif //QTSIMVIEW_POINTS_H
