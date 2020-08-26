@@ -105,6 +105,12 @@ public:
     void setCenter(const QVector3D &center);
 
     /**
+     * Set the background color
+     * @param color
+     */
+    void setBgColor(const QVector4D &color);
+
+    /**
      * Adds given geometry to renderable geometries
      * @param geometry reference to geometry that should be added
      */
@@ -134,18 +140,16 @@ private:
 protected:
     // all drawable geometry
     std::vector<std::shared_ptr<Geometry>> m_geometries;
-
     // Model Transformation
     Transform m_transform;
-
     // Weather Y-axis is mirrored
     CoordinateMirroring m_coordinateMirroring;
-
     // Center of projection
     QVector3D m_center;
-
     // Eye position;
     QVector3D m_eye;
+    // Background color
+    QVector4D m_bg_color;
 };
 
 

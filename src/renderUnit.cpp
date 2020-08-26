@@ -34,6 +34,7 @@ RenderUnit::RenderUnit(QObject *parent)
         : QObject(parent)
         , m_coordinateMirroring(DoNotMirrorCoordinates)
         , m_center(0.0, 0.0, 0.0)
+        , m_bg_color(QVector4D(0.7, 0.92, 1.0, 1.0))
 {
     const float azimuth = 0.0f;
     const float elevation = 15.0f;
@@ -82,7 +83,7 @@ void RenderUnit::render()
             break;
     }
 
-    functions->glClearColor(0.7, 0.92, 1.0, 1.0);
+    functions->glClearColor(m_bg_color.x(), m_bg_color.y(), m_bg_color.z(), m_bg_color.w());
     functions->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     functions->glEnable(GL_DEPTH_TEST);
     functions->glEnable(GL_BLEND);
@@ -127,6 +128,10 @@ void RenderUnit::zoom(const QVector2D &move, const QVector2D &start, const QVect
 
 void RenderUnit::setCenter(const QVector3D &center) {
     m_center = center;
+}
+
+void RenderUnit::setBgColor(const QVector4D &color) {
+    m_bg_color = color;
 }
 
 void RenderUnit::addGeometry(const std::shared_ptr<Geometry> &geometry) {
