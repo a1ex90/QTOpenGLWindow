@@ -52,6 +52,11 @@ ApplicationWindow
             if(event.key == Qt.Key_P) {
                 console.log("P");
             }
+
+            if(event.key == Qt.Key_S) {
+                console.log("Screenshot");
+                openGLViewer.grabToImage(function(result){result.saveToFile("screenshot.png");});
+            }
         }
 
         QTOpenGLWindow { id:openGLWindow}
