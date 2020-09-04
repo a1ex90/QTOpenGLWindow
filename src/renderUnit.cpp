@@ -150,17 +150,8 @@ int RenderUnit::geometryCount() {
     return m_geometries.size();
 }
 
-
-void RenderUnit::getCameraTransform(QVector3D &pos, QMatrix4x4 &rotation, QVector3D &scale) {
-    pos = m_transform.getPos();
-    rotation = m_transform.getRot();
-    scale = m_transform.getScale();
-}
-
-void RenderUnit::setCameraTransform(const QVector3D &pos, const QMatrix4x4 &rotation, const QVector3D &scale) {
-    m_transform.setPos(pos);
-    m_transform.setRot(rotation);
-    m_transform.setScale(scale);
+Transform & RenderUnit::getCameraTransformReference() {
+    return m_transform;
 }
 
 QVector3D RenderUnit::projectOnSphere(QVector2D point, const QVector2D &screen, const float &r) {
