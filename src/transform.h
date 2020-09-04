@@ -59,19 +59,19 @@ public:
      * Returns the position part of the transformation
      * @return position transformation
      */
-    inline QVector3D& getPos() { return m_pos; }
+    inline QVector3D getPos() { return m_pos; }
 
     /**
      * Returns the rotation part of the transformation
      * @return rotation transformation as quaternion
      */
-    inline QMatrix4x4& getRot() { return m_rot; }
+    inline QMatrix4x4 getRot() { return m_rot; }
 
     /**
      * Returns the scaling part of the transformation
      * @return scaling transformation
      */
-    inline QVector3D& getScale() { return m_scale; }
+    inline QVector3D getScale() { return m_scale; }
 
     /**
      * Set the position part of the transformation

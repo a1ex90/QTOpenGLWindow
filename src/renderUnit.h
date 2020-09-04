@@ -134,6 +134,23 @@ public:
      */
     int geometryCount();
 
+
+    /**
+     * Sets externally the camera view parameter
+     * @param pos Camera position
+     * @param rotation Camera rotation
+     * @param scale Camera scaling (zoom)
+     */
+    void getCameraTransform(QVector3D &pos, QMatrix4x4 &rotation, QVector3D &scale);
+
+    /**
+     * Sets externally the camera view parameter
+     * @param pos Camera position
+     * @param rotation Camera rotation
+     * @param scale Camera scaling (zoom)
+     */
+    void setCameraTransform(const QVector3D &pos, const QMatrix4x4 &rotation, const QVector3D &scale);
+
 private:
     QVector3D projectOnSphere(QVector2D point, const QVector2D &screen, const float &r);
 
