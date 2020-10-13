@@ -31,6 +31,7 @@
 #include "Geometry/grid.h"
 #include "Geometry/points.h"
 #include "Geometry/spheres.h"
+#include "Geometry/bulk.h"
 
 class QOpenGLBuffer;
 class QOpenGLShaderProgram;

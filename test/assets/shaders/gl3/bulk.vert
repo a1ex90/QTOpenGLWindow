@@ -1,6 +1,8 @@
 #version 130
 
 in vec3 vertexPosition;
+in vec3 vertexColor;
+out vec3 vColor;
 out vec3 position;
 
 uniform mat4 modelViewMatrix;
@@ -10,6 +12,7 @@ uniform vec4 viewport;
 uniform float R;
 
 void main() {
+    vColor = vertexColor;
     gl_Position = mvp * vec4( vertexPosition, 1.0 );
     position = vec3( modelViewMatrix * vec4( vertexPosition, 1.0 ) );
 

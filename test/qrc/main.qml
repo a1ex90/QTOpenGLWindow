@@ -41,10 +41,11 @@ ApplicationWindow
 
     Item {
         id: openGLViewer
-        x: 10
+        height: parent.height - 20
+        width: parent.width - 20
+        x: parent.width - width - 10
         y: 10
-        width: 640
-        height: 480
+        z: 0
         visible: true
         focus: true
 

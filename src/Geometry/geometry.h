@@ -28,7 +28,8 @@ enum GeometryType {
     MESH,
     GRID,
     POINTCLOUD,
-    SPHERECLOUD
+    SPHERECLOUD,
+    BULKCLOUD
 };
 
 /**
