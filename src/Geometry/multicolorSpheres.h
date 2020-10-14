@@ -22,13 +22,18 @@
 
 #include "points.h"
 
-
-class BulkCloud : public PointCloud {
+/**
+ * \class MCSphereCloud
+ *
+ * \brief Renderable geometry for point cloud/particle data. Draws
+ * given vertices as different colored spheres
+ */
+class MCSphereCloud : public PointCloud {
 public:
     /**
      * Constructor
      */
-    BulkCloud();
+    MCSphereCloud();
 
     /**
      * Override this with the render function for the geometry
@@ -50,21 +55,29 @@ public:
      * @param length number of elements to draw (1/3 of array length)
      */
     void changePoints(float *dataHead, int length);
+
+    /**
+     * Sets the list of all possible colors
+     * @param colors possible colors
+     */
+    void setColors(const QList<QVector3D> &colors);
 private:
     virtual void initializeBuffers() override;
     virtual void additionalChanges() override;
 
 protected:
     void updateColors();
-    void generateColors();
+    void generateColorBuffer();
 
 protected:
     // Color buffer
     QScopedPointer<QOpenGLBuffer> m_colorBuffer;
     // Recolor (if vertex count changed)
     bool m_recolor;
-    // Colors
+    // Color buffer
     float *m_colors;
+    // Possible colors
+    QList<QVector3D> m_possibleColors;
 };
 
 

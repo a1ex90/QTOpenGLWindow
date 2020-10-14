@@ -17,7 +17,7 @@
  *       @date:   13.10.20
  *****************************************************/
 
-#include "bulk.h"
+#include "multicolorSpheres.h"
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 
@@ -25,26 +25,18 @@
  * Constructors
  *****************************************************/
 
-BulkCloud::BulkCloud() :
-    m_colorBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer)){
+MCSphereCloud::MCSphereCloud() :
+    m_colorBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
+    , m_recolor(true){
     m_type = GeometryType::BULKCLOUD;
-    m_recolor = true;
-//    m_colors = new float[9];
-//    m_colors[0] = 1;
-//    m_colors[1] = 0;
-//    m_colors[2] = 0;
-//    m_colors[3] = 0;
-//    m_colors[4] = 1;
-//    m_colors[5] = 0;
-//    m_colors[6] = 0;
-//    m_colors[7] = 0;
-//    m_colors[8] = 1;
+    // Default color
+    m_possibleColors.push_back(QVector3D(1,0,0));
 }
 
 /******************************************************
  * Public Functions
  *****************************************************/
-void BulkCloud::render(const QVector3D &eye, const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix, const QMatrix4x4 &projectionMatrix) {
+void MCSphereCloud::render(const QVector3D &eye, const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix, const QMatrix4x4 &projectionMatrix) {
     QOpenGLFunctions *functions = QOpenGLContext::currentContext()->functions();
 
     const QMatrix4x4 modelViewMatrix = viewMatrix * modelMatrix;
@@ -61,7 +53,6 @@ void BulkCloud::render(const QVector3D &eye, const QMatrix4x4 &modelMatrix, cons
     m_shader->setUniformValue("mvp", modelViewProjectionMatrix);
     m_shader->setUniformValue("R", m_pointSize);
     m_shader->setUniformValue("viewport", QVector4D(viewportSize[0], viewportSize[1], viewportSize[2], viewportSize[3]));
-//    m_shader->setUniformValue("color", QVector4D(m_color, 1.0));
 
     m_shader->setUniformValue("light.position", QVector4D(1.0, 1.0, 1.0, 0.0));
     m_shader->setUniformValue("light.intensity", QVector3D(1.0, 1.0, 1.0));
@@ -72,14 +63,14 @@ void BulkCloud::render(const QVector3D &eye, const QMatrix4x4 &modelMatrix, cons
     m_vao->release();
 }
 
-void BulkCloud::invalidate() {
+void MCSphereCloud::invalidate() {
     m_positionsBuffer->destroy();
     m_colorBuffer->destroy();
     m_shader.reset();
     m_vao->destroy();
 }
 
-void BulkCloud::changePoints(float *dataHead, int length) {
+void MCSphereCloud::changePoints(float *dataHead, int length) {
     m_dataHead = dataHead;
     if(m_drawCount != length) {
         m_drawCount = length;
@@ -88,29 +79,32 @@ void BulkCloud::changePoints(float *dataHead, int length) {
     m_pointsChanged = true;
 }
 
+void MCSphereCloud::setColors(const QList<QVector3D> &colors) {
+    m_possibleColors = colors;
+}
+
 /******************************************************
  * Private Functions
  *****************************************************/
 
-void BulkCloud::initializeBuffers() {
+void MCSphereCloud::initializeBuffers() {
     if (!m_positionsBuffer->create())
         qFatal("Unable to create position buffer");
     if (!m_colorBuffer->create())
         qFatal("Unable to create color buffer");
 }
 
-void BulkCloud::additionalChanges() {
+void MCSphereCloud::additionalChanges() {
     if (m_pointsChanged) {
         updatePoints();
         if (m_recolor) {
-            generateColors();
+            generateColorBuffer();
             updateColors();
         }
-
     }
 }
 
-void BulkCloud::updateColors() {
+void MCSphereCloud::updateColors() {
     m_vao->bind();
 
     m_colorBuffer->bind();
@@ -127,19 +121,11 @@ void BulkCloud::updateColors() {
     m_recolor = false;
 }
 
-void BulkCloud::generateColors() {
-    QList<QVector3D> possibleColors;
-    possibleColors.push_back(QVector3D(0.835, 0.827, 0.525));
-    possibleColors.push_back(QVector3D(0.647, 0.639, 0.435));
-    possibleColors.push_back(QVector3D(0.337, 0.333, 0.243));
-    possibleColors.push_back(QVector3D(0.713, 0.705, 0.345));
-    possibleColors.push_back(QVector3D(0.882, 0.882, 0.815));
-    possibleColors.push_back(QVector3D(0.870, 0.796, 0.290));
-    possibleColors.push_back(QVector3D(0.670, 0.611, 0.211));
+void MCSphereCloud::generateColorBuffer() {
     m_colors = new float[3 * m_drawCount];
     for(int i = 0; i < m_drawCount; i++) {
-        m_colors[3*i] = possibleColors[i % possibleColors.count()].x();
-        m_colors[3*i + 1] = possibleColors[i % possibleColors.count()].y();
-        m_colors[3*i + 2] = possibleColors[i % possibleColors.count()].z();
+        m_colors[3*i] = m_possibleColors[i % m_possibleColors.count()].x();
+        m_colors[3*i + 1] = m_possibleColors[i % m_possibleColors.count()].y();
+        m_colors[3*i + 2] = m_possibleColors[i % m_possibleColors.count()].z();
     }
 }
