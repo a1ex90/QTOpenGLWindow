@@ -7,7 +7,6 @@ out vec3 position;
 
 uniform mat4 modelViewMatrix;
 uniform mat4 mvp;
-uniform vec4 color;
 uniform vec4 viewport;
 uniform float R;
 

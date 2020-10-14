@@ -5,7 +5,7 @@ uniform struct LightInfo {
     vec3 intensity;
 } light;
 
-uniform vec4 color;
+uniform vec4 viewport;
 uniform vec3 eye;
 
 in vec3 vColor;
@@ -18,17 +18,14 @@ vec3 CalcPointLight(LightInfo light, vec3 normal, vec3 surfacePos, vec3 surfaceT
     float att = 0.1f;
     vec3 surfaceToLight = normalize(light.position.xyz - surfacePos);
     //AMBIENT COMPONENT
-    //vec3 ambient = ambientCoff * color.xyz * light.intensity;
     vec3 ambient = ambientCoff * vColor * light.intensity;
 
     //DIFFUSE COMPONENT
     float diffuseCoefficient = max(0.0, dot(normal, surfaceToLight));
-    //vec3 diffuse = diffuseCoefficient * color.xyz * light.intensity;
     vec3 diffuse = diffuseCoefficient * vColor * light.intensity;
 
     //SPECULAR COMPONENT
     float specularCoefficient = 1.0f;
-//    vec3 materialSpecularColor = 0.02f * color.xyz;
     vec3 materialSpecularColor = 0.02f * vColor;
     float materialShininess = 10000.0;
     if(diffuseCoefficient > 0.0)
@@ -54,7 +51,7 @@ void main() {
     // calculate lighting
     vec3 linearColor = CalcPointLight(light, normal, position, surfaceToCamera);
 
-//    vec3 gamma = vec3(1.0/2.2);
     vec3 gamma = vec3(1.0/2.8);
-    fragColor = vec4(pow(linearColor, gamma), color[3]);
+
+    fragColor = vec4(pow(linearColor, gamma), 1.0);
 }

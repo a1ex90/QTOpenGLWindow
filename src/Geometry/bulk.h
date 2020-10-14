@@ -56,6 +56,7 @@ private:
 
 protected:
     void updateColors();
+    void generateColors();
 
 protected:
     // Color buffer

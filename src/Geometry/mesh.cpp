@@ -34,6 +34,12 @@ Mesh::Mesh()
         , m_transform()
         , m_externalTransform()
         , m_fileChangeLoaded(true)
+        , m_ambient(QVector3D(0.1, 0.1, 0.1))
+        , m_diffuse(QVector3D(1.0, 0.1, 0.1))
+        , m_specular(QVector3D(1.0, 1.0, 1.0))
+        , m_shininess(32.0f)
+        , m_lightPos(QVector4D(0.0, 0.0, 0.0, 1.0))
+        , m_lightIntensity(QVector3D(1.0, 1.0, 1.0))
 {}
 
 /******************************************************
@@ -55,13 +61,13 @@ void Mesh::render(const QVector3D &eye, const QMatrix4x4 &modelMatrix, const QMa
     m_shader->setUniformValue("projectionMatrix", projectionMatrix);
     m_shader->setUniformValue("mvp", meshModelProjectionMatrix);
 
-    m_shader->setUniformValue("light.position", QVector4D(0.0, 0.0, 0.0, 1.0));
-    m_shader->setUniformValue("light.intensity", QVector3D(1.0, 1.0, 1.0));
+    m_shader->setUniformValue("light.position", m_lightPos);
+    m_shader->setUniformValue("light.intensity", m_lightIntensity);
 
-    m_shader->setUniformValue("material.ka", QVector3D(0.1, 0.1, 0.1));
-    m_shader->setUniformValue("material.kd", QVector3D(1.0, 0.1, 0.1));
-    m_shader->setUniformValue("material.ks", QVector3D(1.0, 1.0, 1.0));
-    m_shader->setUniformValue("material.shininess", 32.0f);
+    m_shader->setUniformValue("material.ka", m_ambient);
+    m_shader->setUniformValue("material.kd", m_diffuse);
+    m_shader->setUniformValue("material.ks", m_specular);
+    m_shader->setUniformValue("material.shininess", m_shininess);
 
     m_vao->bind();
     functions->glDrawElements(GL_TRIANGLES, m_drawCount, GL_UNSIGNED_INT, Q_NULLPTR);
@@ -132,6 +138,18 @@ void Mesh::updateExternalTransform(float *transform) {
         }
     }
     updateExternalTransform(transformation);
+}
+
+void Mesh::setMaterial(QVector3D diffuse, QVector3D ambient, QVector3D specular, float shininess) {
+    m_ambient = ambient;
+    m_diffuse = diffuse;
+    m_specular = specular;
+    m_shininess = shininess;
+}
+
+void Mesh::setLight(QVector3D pos, QVector3D intensities) {
+    m_lightPos = QVector4D(pos, 1.0);
+    m_lightIntensity = intensities;
 }
 
 

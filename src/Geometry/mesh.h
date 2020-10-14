@@ -79,6 +79,22 @@ public:
      * @param transform External transformation 4x4 Matrix data (column major)
      */
     void updateExternalTransform(float* transform);
+
+    /**
+     * Sets the material colors
+     * @param diffuse Diffuse (Base color)
+     * @param ambient Ambient (Shadow color)
+     * @param specular Specular (Highlight color)
+     * @param shininess Shininess
+     */
+    void setMaterial(QVector3D diffuse, QVector3D ambient = QVector3D(0,0,0), QVector3D specular = QVector3D(0,0,0), float shininess = 32.0f);
+
+    /**
+     * Sets the lighting
+     * @param pos Positon of the point light
+     * @param intensities Intensity (color of the light)
+     */
+    void setLight(QVector3D pos, QVector3D intensities = QVector3D(1,1,1));
 private:
     virtual void initializeBuffers() override;
     virtual void additionalChanges() override;
@@ -98,6 +114,18 @@ protected:
     QString m_meshFile;
     // Weather the mesh has been loaded to buffers
     bool m_fileChangeLoaded;
+    // Ambient color
+    QVector3D m_ambient;
+    // Diffuse color
+    QVector3D m_diffuse;
+    // Specular color
+    QVector3D m_specular;
+    // Shininess
+    float m_shininess;
+    // Light position
+    QVector4D m_lightPos;
+    // Light intensity
+    QVector3D m_lightIntensity;
 };
 
 #endif //QTSIMVIEW_MESH_H
