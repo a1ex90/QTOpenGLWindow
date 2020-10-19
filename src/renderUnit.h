@@ -32,6 +32,7 @@
 #include "Geometry/points.h"
 #include "Geometry/spheres.h"
 #include "Geometry/multicolorSpheres.h"
+#include "arcball.h"
 
 class QOpenGLBuffer;
 class QOpenGLShaderProgram;
@@ -149,6 +150,7 @@ protected:
     std::vector<std::shared_ptr<Geometry>> m_geometries;
     // Model Transformation
     Transform m_transform;
+    Arcball m_arcball;
     // Weather Y-axis is mirrored
     CoordinateMirroring m_coordinateMirroring;
     // Center of projection
