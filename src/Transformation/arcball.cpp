@@ -76,9 +76,9 @@ void Arcball::getParameter(QVector3D &position, QQuaternion &rotation, float &zo
 }
 
 void Arcball::setParameter(const QVector3D &position, const QQuaternion &rotation, const float &zoom) {
-    m_pos0 = m_posCur = m_posTar = position;
-    m_rot0 = m_rotCur = m_rotTar = rotation;
-    m_zoom0 = m_zoomCur = m_zoomTar = zoom;
+    m_pos0 = m_posTar = position;
+    m_rot0 = m_rotTar = rotation;
+    m_zoom0 = m_zoomTar = zoom;
 }
 
 /******************************************************
