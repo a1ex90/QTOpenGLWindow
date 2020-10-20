@@ -31,6 +31,7 @@ PointCloud::PointCloud()
         , m_color(QVector3D(0,0,0))
         , m_pointSize(1.0f)
         , m_pointsChanged(false)
+        , m_dataHead(nullptr)
 {}
 
 /******************************************************

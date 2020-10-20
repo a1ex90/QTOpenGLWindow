@@ -42,12 +42,12 @@ public:
      * @param vm View Matrix
      * @param pm Projection Matrix
      */
-    virtual void render(const QVector3D &eye, const QMatrix4x4 &mm, const QMatrix4x4 &vm, const QMatrix4x4 &pm) override;
+    void render(const QVector3D &eye, const QMatrix4x4 &mm, const QMatrix4x4 &vm, const QMatrix4x4 &pm) override;
 
     /**
      * Function to destroy buffers and shader
      */
-    virtual void invalidate() override;
+    void invalidate() override;
 
     /**
      * Initializes the grid with center at given position
@@ -56,8 +56,8 @@ public:
     void initGrid(QVector3D offset);
 
 private:
-    virtual void initializeBuffers() override;
-    virtual void additionalChanges() override;
+    void initializeBuffers() override;
+    void additionalChanges() override;
     void initGrid();
 protected:
     // Grid Vertex position buffer

@@ -21,7 +21,7 @@
 #define QTSIMVIEW_MESH_H
 
 #include "geometry.h"
-#include "../transform.h"
+#include "Transformation/transform.h"
 #include <QOpenGLBuffer>
 
 /**
@@ -44,18 +44,18 @@ public:
      * @param vm View Matrix
      * @param pm Projection Matrix
      */
-    virtual void render(const QVector3D &eye, const QMatrix4x4 &mm, const QMatrix4x4 &vm, const QMatrix4x4 &pm) override;
+    void render(const QVector3D &eye, const QMatrix4x4 &mm, const QMatrix4x4 &vm, const QMatrix4x4 &pm) override;
 
     /**
      * Function to destroy buffers and shader
      */
-    virtual void invalidate() override;
+    void invalidate() override;
 
     /**
      * Changes mesh to given .obj file
      * @param file filepath to .obj file
      */
-    void changeMesh(QString file);
+    void changeMesh(const QString &file);
 
     /**
      * Function to clear buffers
@@ -72,13 +72,13 @@ public:
      * Sets external transformation that's applied to the internal
      * @param transform External transformation 4x4 Matrix
      */
-    void updateExternalTransform(QMatrix4x4 transform);
+    void updateExternalTransform(const QMatrix4x4 &transform);
 
     /**
      * Sets external transformation that's applied to the internal
      * @param transform External transformation 4x4 Matrix data (column major)
      */
-    void updateExternalTransform(float* transform);
+    void updateExternalTransform(const float* transform);
 
     /**
      * Sets the material colors
@@ -87,17 +87,17 @@ public:
      * @param specular Specular (Highlight color)
      * @param shininess Shininess
      */
-    void setMaterial(QVector3D diffuse, QVector3D ambient = QVector3D(0,0,0), QVector3D specular = QVector3D(0,0,0), float shininess = 32.0f);
+    void setMaterial(const QVector3D &diffuse, const QVector3D &ambient = QVector3D(0,0,0), const QVector3D &specular = QVector3D(0,0,0), const float &shininess = 32.0f);
 
     /**
      * Sets the lighting
      * @param pos Positon of the point light
      * @param intensities Intensity (color of the light)
      */
-    void setLight(QVector3D pos, QVector3D intensities = QVector3D(1,1,1));
+    void setLight(const QVector3D &pos, const QVector3D &intensities = QVector3D(1,1,1));
 private:
-    virtual void initializeBuffers() override;
-    virtual void additionalChanges() override;
+    void initializeBuffers() override;
+    void additionalChanges() override;
     void changeMesh();
 protected:
     // Vertex position buffer

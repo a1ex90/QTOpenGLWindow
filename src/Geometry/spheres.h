@@ -37,7 +37,7 @@ public:
      * @param vm View Matrix
      * @param pm Projection Matrix
      */
-    virtual void render(const QVector3D &eye, const QMatrix4x4 &mm, const QMatrix4x4 &vm, const QMatrix4x4 &pm) override;
+    void render(const QVector3D &eye, const QMatrix4x4 &mm, const QMatrix4x4 &vm, const QMatrix4x4 &pm) override;
 
 protected:
 

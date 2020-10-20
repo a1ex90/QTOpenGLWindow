@@ -57,8 +57,6 @@ void RenderUnit::render()
 {
     QOpenGLFunctions *functions = QOpenGLContext::currentContext()->functions();
 
-//    QMatrix4x4 modelMatrix = m_transform.getModel();
-    m_arcball.updateTransformation();
     QMatrix4x4 modelMatrix = m_arcball.getModel();
     QMatrix4x4 viewMatrix;
     QMatrix4x4 projectionMatrix;
@@ -103,30 +101,15 @@ void RenderUnit::invalidate()
 }
 
 void RenderUnit::rotate(const QVector2D &move, const QVector2D &start, const QVector2D &screen) {
-//    if(move != start) {
-//        const float r = std::min(screen.x(),screen.y()) / 2.0f;
-//        QVector3D startP = projectOnSphere(start, screen, r);
-//        QVector3D moveP = projectOnSphere(move, screen, r);
-//        float angle = -acos(QVector3D::dotProduct(startP,moveP)) * 180 / M_PI;
-//        QVector3D axis = QVector3D::crossProduct(startP, moveP);
-//        axis = m_transform.getRot().inverted() * axis;
-//        QMatrix4x4 mat = m_transform.getRot();
-//        mat.rotate(angle,axis);
-//        m_transform.setRot(mat);
-//    }
     m_arcball.rotate(move, start, screen);
 }
 
 
 void RenderUnit::pan(const QVector2D &move, const QVector2D &start, const QVector2D &screen) {
-//    QVector3D moveP = { 0, 2.0f * (start.y() - move.y()) / screen.y(), 2.0f * (start.x() - move.x()) / screen.x()};
-//    m_transform.setPos(m_transform.getPos() + moveP);
     m_arcball.translate(move, start, screen);
 }
 
 void RenderUnit::zoom(const QVector2D &move, const QVector2D &start, const QVector2D &screen) {
-//    float zoom = 1.0f + (move.y() - start.y()) / screen.y();
-//    m_transform.setScale(zoom * m_transform.getScale());
     m_arcball.zoom(move, start, screen);
 }
 
@@ -154,27 +137,6 @@ int RenderUnit::geometryCount() {
     return m_geometries.size();
 }
 
-Transform & RenderUnit::getCameraTransformReference() {
-    return m_transform;
-}
-
-QVector3D RenderUnit::projectOnSphere(QVector2D point, const QVector2D &screen, const float &r) {
-//    point.setX(point.x() - screen.x() / 2.0f);
-//    point.setY(-(screen.y() / 2.0f - point.y()) );
-//    float a = std::min(r*r, point.x()*point.x() + point.y()*point.y());
-//    float z = sqrt(r*r - a);
-//    float l = sqrt(point.x()*point.x() + point.y()*point.y() + z*z);
-//    return { z / l, point.y() / l, point.x() / l};
-    point.setX(2.0f * point.x() / screen.x() - 1.0f);
-    point.setY(1.0f - 2.0f * point.y() / screen.y());
-    const float dist = QVector2D::dotProduct(point, point);
-    float z;
-    if(dist <= 1.0f) {
-        z = sqrt(1.0f - dist);
-    } else {
-        // point outside sphere => project
-        point = point.normalized();
-        z = 0.0f;
-    }
-    return { -z, point.y(), -point.x()};
+Arcball & RenderUnit::getArcballReference() {
+    return m_arcball;
 }

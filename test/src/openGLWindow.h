@@ -22,14 +22,12 @@
 
 #include "fbo.h"
 
-#include "transform.h"
-
 class MyFrameBufferObject : public FrameBufferObject
 {
 Q_OBJECT
 
 public:
-    explicit MyFrameBufferObject(QQuickItem *parent = 0);
+    explicit MyFrameBufferObject(QQuickItem *parent = nullptr);
     Renderer *createRenderer() const Q_DECL_OVERRIDE;
 };
 

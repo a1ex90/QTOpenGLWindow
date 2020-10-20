@@ -42,19 +42,19 @@ public:
      * @param vm View Matrix
      * @param pm Projection Matrix
      */
-    virtual void render(const QVector3D &eye, const QMatrix4x4 &mm, const QMatrix4x4 &vm, const QMatrix4x4 &pm) override;
+    void render(const QVector3D &eye, const QMatrix4x4 &mm, const QMatrix4x4 &vm, const QMatrix4x4 &pm) override;
 
     /**
      * Function to destroy buffers and shader
      */
-    virtual void invalidate() override;
+    void invalidate() override;
 
     /**
      * Changes points to given array
      * @param dataHead data head of the array data
      * @param length number of elements to draw (1/3 of array length)
      */
-    void changePoints(float *dataHead, int length);
+    void changePoints(float *dataHead, int length) override;
 
     /**
      * Sets the list of all possible colors
@@ -62,8 +62,8 @@ public:
      */
     void setColors(const QList<QVector3D> &colors);
 private:
-    virtual void initializeBuffers() override;
-    virtual void additionalChanges() override;
+    void initializeBuffers() override;
+    void additionalChanges() override;
 
 protected:
     void updateColors();

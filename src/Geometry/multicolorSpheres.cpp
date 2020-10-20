@@ -27,7 +27,8 @@
 
 MCSphereCloud::MCSphereCloud() :
     m_colorBuffer(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
-    , m_recolor(true){
+    , m_recolor(true)
+    , m_colors(nullptr) {
     m_type = GeometryType::BULKCLOUD;
     // Default color
     m_possibleColors.push_back(QVector3D(1,0,0));

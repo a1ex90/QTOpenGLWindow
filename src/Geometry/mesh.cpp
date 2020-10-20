@@ -82,7 +82,7 @@ void Mesh::invalidate() {
     m_vao->destroy();
 }
 
-void Mesh::changeMesh(QString file) {
+void Mesh::changeMesh(const QString &file) {
     m_meshFile = file;
     m_fileChangeLoaded = false;
 }
@@ -126,11 +126,11 @@ void Mesh::setTransform(Transform transform) {
     m_transform = transform;
 }
 
-void Mesh::updateExternalTransform(QMatrix4x4 transform) {
+void Mesh::updateExternalTransform(const QMatrix4x4 &transform) {
     m_externalTransform = transform;
 }
 
-void Mesh::updateExternalTransform(float *transform) {
+void Mesh::updateExternalTransform(const float *transform) {
     QMatrix4x4 transformation;
     for(int i = 0; i < 4; i++) {
         for(int j = 0; j < 4; j++) {
@@ -140,14 +140,14 @@ void Mesh::updateExternalTransform(float *transform) {
     updateExternalTransform(transformation);
 }
 
-void Mesh::setMaterial(QVector3D diffuse, QVector3D ambient, QVector3D specular, float shininess) {
+void Mesh::setMaterial(const QVector3D &diffuse, const QVector3D &ambient, const QVector3D &specular, const float &shininess) {
     m_ambient = ambient;
     m_diffuse = diffuse;
     m_specular = specular;
     m_shininess = shininess;
 }
 
-void Mesh::setLight(QVector3D pos, QVector3D intensities) {
+void Mesh::setLight(const QVector3D &pos, const QVector3D &intensities) {
     m_lightPos = QVector4D(pos, 1.0);
     m_lightIntensity = intensities;
 }

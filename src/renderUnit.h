@@ -26,13 +26,13 @@
 #include <QtGui/QVector3D>
 #include <memory>
 
-#include "transform.h"
+#include "Transformation/transform.h"
 #include "Geometry/mesh.h"
 #include "Geometry/grid.h"
 #include "Geometry/points.h"
 #include "Geometry/spheres.h"
 #include "Geometry/multicolorSpheres.h"
-#include "arcball.h"
+#include "Transformation/arcball.h"
 
 class QOpenGLBuffer;
 class QOpenGLShaderProgram;
@@ -53,12 +53,12 @@ public:
     /**
      * Constructor
      */
-    explicit RenderUnit(QObject *parent = 0);
+    explicit RenderUnit(QObject *parent = nullptr);
 
     /**
      * Deconstructor
      */
-    ~RenderUnit();
+    ~RenderUnit() override;
 
     enum CoordinateMirroring {
         DoNotMirrorCoordinates,
@@ -140,16 +140,12 @@ public:
      * Sets externally the camera transform
      * @return Reference to the camera transform
      */
-    Transform& getCameraTransformReference();
-
-private:
-    QVector3D projectOnSphere(QVector2D point, const QVector2D &screen, const float &r);
+    Arcball& getArcballReference();
 
 protected:
     // all drawable geometry
     std::vector<std::shared_ptr<Geometry>> m_geometries;
-    // Model Transformation
-    Transform m_transform;
+    // Arcball Transformation
     Arcball m_arcball;
     // Weather Y-axis is mirrored
     CoordinateMirroring m_coordinateMirroring;

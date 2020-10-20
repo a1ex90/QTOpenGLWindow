@@ -17,8 +17,8 @@
  *       @date:   19.10.20
  *****************************************************/
 
-#ifndef QTOPENGLWINDOW_QDUALEQUATERNION_H
-#define QTOPENGLWINDOW_QDUALEQUATERNION_H
+#ifndef QTOPENGLWINDOW_QDUALQUATERNION_H
+#define QTOPENGLWINDOW_QDUALQUATERNION_H
 
 #include <QQuaternion>
 #include <QMatrix4x4>
@@ -168,4 +168,4 @@ protected:
     QQuaternion m_dual;
 };
 
-#endif //QTOPENGLWINDOW_QDUALEQUATERNION_H
+#endif //QTOPENGLWINDOW_QDUALQUATERNION_H
