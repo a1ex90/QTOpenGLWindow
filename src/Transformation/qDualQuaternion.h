@@ -22,6 +22,7 @@
 
 #include <QQuaternion>
 #include <QMatrix4x4>
+#include <cmath>
 
 class QDualQuaternion {
 public:
@@ -41,7 +42,11 @@ public:
     }
 
     static QDualQuaternion translation(const QVector3D &t) {
-        return {{}, {0, t}};
+        return {QQuaternion(1.0f,{}), 0.5f * QQuaternion(0, t)};
+    }
+
+    static QDualQuaternion axisAngle(const QVector3D &axis, const float &angle) {
+        return { {cosf(0.5f * angle), axis.x() * sinf(0.5f * angle), axis.y() * sinf(0.5f * angle), axis.z() * sinf(0.5f * angle) }, QQuaternion(0.0f, 0.0f, 0.0f, 0.0f) };
     }
 
     QDualQuaternion operator* (const float &scale) {
