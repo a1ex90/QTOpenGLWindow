@@ -91,7 +91,7 @@ public:
     }
 
     void normalize() {
-        float mag = QQuaternion::dotProduct(m_real, m_dual);
+        float mag = QQuaternion::dotProduct(m_real, m_real);
         if(mag > 0.0000001f) {
             m_real *= 1.0f / mag;
             m_dual *= 1.0f / mag;
