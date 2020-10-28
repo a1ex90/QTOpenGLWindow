@@ -75,7 +75,7 @@ public:
     }
 
     static QDualQuaternion normalize(QDualQuaternion q) {
-        float mag = QQuaternion::dotProduct(q.m_real, q.m_dual);
+        float mag = QQuaternion::dotProduct(q.m_real, q.m_real);
         if(mag > 0.0000001f) {
             q.m_real *= 1.0f / mag;
             q.m_dual *= 1.0f / mag;
@@ -140,7 +140,7 @@ public:
     }
 
     QMatrix4x4 toMatrix() {
-//        QDualQuaternion q = this->normalized();
+        QDualQuaternion q = this->normalized();
 
         QMatrix4x4 M;
         M.setToIdentity();
