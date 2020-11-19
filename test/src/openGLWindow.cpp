@@ -35,6 +35,7 @@ public:
         std::shared_ptr<Mesh> ms = std::make_shared<Mesh>();
         ms->initialize("../../test/assets/shaders/gl3/phong.frag", "../../test/assets/shaders/gl3/phong.vert");
         ms->changeMesh("../../test/assets/obj/Squirrel.obj");
+        ms->setOpacity(1.0f);
         Transform t1;
         float scaling = 0.3;
         t1.setPos(scaling * QVector3D(0.05,0.43,4.272));

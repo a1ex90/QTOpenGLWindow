@@ -13,6 +13,7 @@ struct MaterialInfo
     float shininess;    // Specular shininess factor
 };
 uniform MaterialInfo material;
+uniform float opacity;
 
 in vec3 position;
 in vec3 normal;
@@ -37,6 +38,5 @@ vec3 adsModel( const in vec3 pos, const in vec3 n )
 
 void main()
 {
-    fragColor = vec4( adsModel( position, normalize( normal ) ), 1.0 );
-//	fragColor = vec4(0.0,0.0,0.0,0.2);
+    fragColor = vec4( adsModel( position, normalize( normal ) ), opacity);
 }

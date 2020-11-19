@@ -38,6 +38,7 @@ Mesh::Mesh()
         , m_diffuse(QVector3D(1.0, 0.1, 0.1))
         , m_specular(QVector3D(1.0, 1.0, 1.0))
         , m_shininess(32.0f)
+        , m_opacity(1.0f)
         , m_lightPos(QVector4D(0.0, 0.0, 0.0, 1.0))
         , m_lightIntensity(QVector3D(1.0, 1.0, 1.0))
 {}
@@ -68,6 +69,8 @@ void Mesh::render(const QVector3D &eye, const QMatrix4x4 &modelMatrix, const QMa
     m_shader->setUniformValue("material.kd", m_diffuse);
     m_shader->setUniformValue("material.ks", m_specular);
     m_shader->setUniformValue("material.shininess", m_shininess);
+
+    m_shader->setUniformValue("opacity", m_opacity);
 
     m_vao->bind();
     functions->glDrawElements(GL_TRIANGLES, m_drawCount, GL_UNSIGNED_INT, Q_NULLPTR);
@@ -145,6 +148,10 @@ void Mesh::setMaterial(const QVector3D &diffuse, const QVector3D &ambient, const
     m_diffuse = diffuse;
     m_specular = specular;
     m_shininess = shininess;
+}
+
+void Mesh::setOpacity(const float &opacity) {
+    m_opacity = opacity;
 }
 
 void Mesh::setLight(const QVector3D &pos, const QVector3D &intensities) {

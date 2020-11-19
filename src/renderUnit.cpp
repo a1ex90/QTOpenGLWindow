@@ -87,6 +87,7 @@ void RenderUnit::render()
     functions->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     functions->glEnable(GL_DEPTH_TEST);
     functions->glEnable(GL_BLEND);
+    functions->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     for(std::shared_ptr<Geometry> geo: m_geometries) {
         geo->render(m_eye, modelMatrix, viewMatrix, projectionMatrix);

@@ -90,6 +90,11 @@ public:
     void setMaterial(const QVector3D &diffuse, const QVector3D &ambient = QVector3D(0,0,0), const QVector3D &specular = QVector3D(0,0,0), const float &shininess = 32.0f);
 
     /**
+     * Sets the opacity (1 opaque / 0 transparent)
+     * @param opacity
+     */
+    void setOpacity(const float &opacity);
+    /**
      * Sets the lighting
      * @param pos Positon of the point light
      * @param intensities Intensity (color of the light)
@@ -122,6 +127,8 @@ protected:
     QVector3D m_specular;
     // Shininess
     float m_shininess;
+    // Object opacity
+    float m_opacity;
     // Light position
     QVector4D m_lightPos;
     // Light intensity
