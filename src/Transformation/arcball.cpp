@@ -56,7 +56,7 @@ void Arcball::translate(const QVector2D &current, const QVector2D &start, const 
 
 void Arcball::zoom(const QVector2D &current, const QVector2D &start, const QVector2D &screen) {
     float zoom = (current.y() - start.y()) / screen.y();
-    m_zoomTar += zoom;
+    m_zoomTar *= exp(zoom);
     if(m_zoomTar < 0) {
         m_zoomTar = 0;
     }
