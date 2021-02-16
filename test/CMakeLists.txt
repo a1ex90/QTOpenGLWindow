@@ -17,6 +17,9 @@ find_package(Qt5 COMPONENTS Core Quick Widgets REQUIRED)
 file(GLOB_RECURSE ${PROJECT_NAME}_HEADERS src/*.h qrc/*.qrc)
 file(GLOB_RECURSE ${PROJECT_NAME}_SOURCES src/*.cpp)
 
+# Copy assets to build dir
+file(COPY assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 add_executable(${PROJECT_NAME}
         ${${PROJECT_NAME}_SOURCES}
         ${${PROJECT_NAME}_HEADERS})

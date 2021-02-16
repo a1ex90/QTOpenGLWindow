@@ -33,8 +33,8 @@ public:
     MyFrameBufferObjectRenderer()
     {
         std::shared_ptr<Mesh> ms = std::make_shared<Mesh>();
-        ms->initialize("../../test/assets/shaders/gl3/phong.frag", "../../test/assets/shaders/gl3/phong.vert");
-        ms->changeMesh("../../test/assets/obj/Squirrel.obj");
+        ms->initialize("assets//shaders//gl3//phong.frag", "assets//shaders//gl3//phong.vert");
+        ms->changeMesh("assets//obj//Squirrel.obj");
         ms->setOpacity(1.0f);
         Transform t1;
         float scaling = 0.3;
@@ -44,7 +44,7 @@ public:
         m_render.addGeometry(ms);
 
         std::shared_ptr<Grid> gd = std::make_shared<Grid>();
-        gd->initialize("../../test/assets/shaders/gl3/checkerboard.frag", "../../test/assets/shaders/gl3/checkerboard.vert");
+        gd->initialize("assets//shaders//gl3//checkerboard.frag", "assets//shaders//gl3//checkerboard.vert");
         gd->initGrid(QVector3D(0,0,0));
         m_render.addGeometry(gd);
     }

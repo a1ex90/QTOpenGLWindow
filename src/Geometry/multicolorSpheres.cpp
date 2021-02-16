@@ -60,6 +60,7 @@ void MCSphereCloud::render(const QVector3D &eye, const QMatrix4x4 &modelMatrix, 
 
     m_vao->bind();
     functions->glEnable(GL_PROGRAM_POINT_SIZE);
+    functions->glEnable(GL_POINT_SPRITE);
     functions->glDrawArrays(GL_POINTS, 0, m_drawCount);
     m_vao->release();
 }
