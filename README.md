@@ -17,7 +17,7 @@ CMake can be advised to build a test application by passing a variable `BUILD_TE
 The following steps need to be done to add this module to an existing project:
 1. clone this module to a folder inside the project (e.g. `ext/QTOpenGLWindow`) or directly add this module as a submodule to the project git
 ```
-git submodule add https://scm.mi.hs-rm.de/rhodecode/ag/vision/ATRIUM/QTOpenGLWindow ext/QTOpenGLWindow
+git submodule add 'link_to_this_repo' ext/QTOpenGLWindow
 ```
 2. add this module to the project CMake file
 ```
